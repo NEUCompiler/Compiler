@@ -52,6 +52,6 @@ public class WordScanner {
 	}
 	
 	public static void main(String[] args) {
-		
+		new WordScanner().readCodeFromFile();
 	}
 }
