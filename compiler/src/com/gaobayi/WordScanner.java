@@ -68,7 +68,7 @@ public class WordScanner {
 	 * @param code 代码字符串。
 	 */
 	public void scan(String code) {
-		
+		//cxvz
 	}
 	
 	public static void main(String[] args) {
