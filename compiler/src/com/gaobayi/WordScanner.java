@@ -59,8 +59,37 @@ public class WordScanner {
 	 * 将词表写入Map。
 	 */
 	public void writeToMap() {
-		//TODO 1.读table文件到map
+		try {
+			File myFile = new File(TABLE_PATH);
+			FileReader fileReader =new FileReader(myFile);
+			BufferedReader reader =new BufferedReader(fileReader);
+			String line = null;
+			String kind = null;
+			
+			while ((line = reader.readLine()) != null) { 
+				String[] splits = line.split(" ");
+				
+				if("KeyWord".equals(line)||"Border".equals(line))
+				{
+					kind = line;
+				}
+				else if ("KeyWord".equals(kind)){
+					keyWordMap.put( splits[0],splits[1] );
+				}
+				else if("Border".equals(kind)){
+					borderMap.put( splits[0],splits[1] );
+					
+				}
+					
+				}
+				
+			reader.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		
+//		System.out.println(keyWordMap.toString());
+//		System.out.println(borderMap.toString());
 	}
 	
 	/**
@@ -70,9 +99,13 @@ public class WordScanner {
 	public void scan(String code) {
 	}
 	
+	public void addTable() {
+		
+	}
+	
 	public static void main(String[] args) {
 	 WordScanner scaner = new WordScanner();
-	 scaner.readCodeFromFile();
+	 scaner.writeToMap();
 	}
 	}
 
