@@ -75,6 +75,6 @@ public class WordScanner {
 	 WordScanner scaner = new WordScanner();
 	 scaner.readCodeFromFile();
 	}
-		
+		//fdds
 	}
 
