@@ -1,7 +1,11 @@
 package com.gaobayi;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * 词法扫描器
@@ -17,7 +21,7 @@ public class WordScanner {
 	public static final String CODE_PATH = "resource/code.txt";
 	
 	// 待扫描代码。
-	private String code;
+	private String code = "";
 	// token。
 	private String token = "";
 	// 关键字表。
@@ -30,16 +34,32 @@ public class WordScanner {
 	private Map<String, String> constantMap = new HashMap<>();
 	
 	/**
-	 * 将词表写入Map。
-	 */
-	public void writeToMap() {
-		
-	}
-	
-	/**
 	 * 从文本中读取代码。
 	 */
 	public void readCodeFromFile() {
+		try {
+			File myFile = new File(CODE_PATH);
+			FileReader fileReader =new FileReader(myFile);
+			BufferedReader reader =new BufferedReader(fileReader);
+			String line = null;
+			
+			while ((line = reader.readLine()) != null) { 
+				code = code + line.trim();
+			}
+			
+			reader.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		code = code.replace(" ", "");
+		System.out.println(code);
+		
+	}
+	/**
+	 * 将词表写入Map。
+	 */
+	public void writeToMap() {
+		//TODO 1.读table文件到map
 		
 	}
 	
@@ -52,6 +72,10 @@ public class WordScanner {
 	}
 	
 	public static void main(String[] args) {
-		new WordScanner().readCodeFromFile();
+	 WordScanner scaner = new WordScanner();
+	 scaner.readCodeFromFile();
+		
 	}
-}
+		
+	}
+
