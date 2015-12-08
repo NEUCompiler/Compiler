@@ -1,4 +1,4 @@
-package com.gaobayi;
+package com.wordScanner;
 
 import java.io.BufferedReader;
 import java.io.File;
