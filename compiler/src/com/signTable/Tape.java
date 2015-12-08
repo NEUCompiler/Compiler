@@ -5,7 +5,7 @@ package com.signTable;
  * @author 刘鑫伟
  *
  */
-public class Type {
+public class Tape {
 
 	//类码，类型代码。
 	private String tVal;
@@ -15,7 +15,7 @@ public class Type {
 	/**
 	 * 无参构造函数。
 	 */
-	public Type() {
+	public Tape() {
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class Type {
 	 * @param tVal
 	 * @param tPoint
 	 */
-	public Type(String tVal, String tPoint) {
+	public Tape(String tVal, String tPoint) {
 		super();
 		this.tVal = tVal;
 		this.tPoint = tPoint;
