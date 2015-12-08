@@ -1,17 +1,6 @@
-int main(void) 
-{
-	int a = 11;
-	int b1 = 12;
-	int c;
-	char ch[10]="ok";
-	char x,y='a';
-	
-	if (a<=b1) 
-	{
-		c=a;
-    	a=b1;
-        b1=c;
-    }
-    
-	c=a+d;  
-}
+program example
+    var a,b:integer;
+    begin
+a:=2.5.; 
+b:=2*5+a;
+end.
