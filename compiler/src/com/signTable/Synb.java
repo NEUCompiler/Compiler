@@ -7,13 +7,13 @@ package com.signTable;
  */
 public class Synb {
 	
-	//名字。
+	//名字，标识符源码。
 	private String name;
-	//类型。
+	//类型，指针，指向类型表相应项。
 	private String type;
-	//种类。
+	//种类，种类编码。
 	private String cat;
-	//地址。
+	//地址，指针，根据标识符的种类不同分别指向,PFINFL,CONSL,LENL,VALL。
 	private String addr;
 	
 	/**
