@@ -87,7 +87,7 @@ public class WordScanner {
 		}
 
 		// System.out.println(keyWordMap.toString());
-		// System.out.println(borderMap.toString());aaa
+		// System.out.println(borderMap.toString());
 	}
 
 	/**
