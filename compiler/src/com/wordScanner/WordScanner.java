@@ -177,7 +177,8 @@ public class WordScanner {
 				} else {
 					i = i + 1;
 					token = token + "<" + start + "," + "border" + ","
-						+ borderMap.get("" + start) + ">";
+		
+							+ borderMap.get("" + start) + ">";
 				}
 			}
 			code = code.substring(i);
