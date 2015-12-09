@@ -43,7 +43,7 @@ public class WordScanner {
 			String line = null;
 
 			while ((line = reader.readLine()) != null) {
-				code = code + line.trim();
+				code = code + line;
 			}
 
 			reader.close();
@@ -67,13 +67,14 @@ public class WordScanner {
 			String kind = null;
 
 			while ((line = reader.readLine()) != null) {
-				String[] splits = line.split(" ");
 
 				if ("KeyWord".equals(line) || "Border".equals(line)) {
 					kind = line;
 				} else if ("KeyWord".equals(kind)) {
+					String[] splits = line.split(" ");
 					keyWordMap.put(splits[0], splits[1]);
 				} else if ("Border".equals(kind)) {
+					String[] splits = line.split(" ");
 					borderMap.put(splits[0], splits[1]);
 
 				}
@@ -119,7 +120,8 @@ public class WordScanner {
 					}
 					ch = code.charAt(i);
 				}
-				word = code.substring(0, i);
+				word = code.substring(0, i);   //  截取字符串
+				// 判断当前字符串是否包含在Map中
 				if (keyWordMap.containsKey(word)) {
 					token = token + "<" + word + "," + "Keyword" + ","
 							+ keyWordMap.get(word) + ">";
