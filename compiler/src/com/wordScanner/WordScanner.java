@@ -96,7 +96,7 @@ public class WordScanner {
 	 * @param code
 	 *            代码字符串。
 	 */
-	public void scan() {
+	public void scan(String code) {
 		String word; // 当前单词。
 		char start; // 开始字符。
 		char ch; // 当前字符。
@@ -120,8 +120,8 @@ public class WordScanner {
 					}
 					ch = code.charAt(i);
 				}
-				word = code.substring(0, i);   //  截取字符串
-				// 判断当前字符串是否包含在Map中
+				word = code.substring(0, i);   // 截取字符串
+				// 判断当前单词在哪个表中
 				if (keyWordMap.containsKey(word)) {
 					token = token + "<" + word + "," + "Keyword" + ","
 							+ keyWordMap.get(word) + ">";
@@ -177,8 +177,7 @@ public class WordScanner {
 				} else {
 					i = i + 1;
 					token = token + "<" + start + "," + "border" + ","
-		
-							+ borderMap.get("" + start) + ">";
+						+ borderMap.get("" + start) + ">";
 				}
 			}
 			code = code.substring(i);
@@ -187,11 +186,84 @@ public class WordScanner {
 		
 		System.out.println(token);
 	}
+	
+	/**
+	 * 读单词，给语法分析提供使用。
+	 * 
+	 * @param code 待识别的程序。
+	 * @return 当前单词。
+	 */
+	public String read() {
+		String word = ""; // 当前单词。
+		char start; // 开始字符。
+		char ch; // 当前字符。
+		int i = 0;
+		
+		while (code.indexOf(" ") == 0) {
+			code = code.substring(1);
+		}
+		
+		start = code.charAt(0);
+		if ((start >= 'A' && start <= 'Z')
+				|| (start >= 'a' && start <= 'z')) {
+			ch = code.charAt(0);
+			while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
+					|| Character.isDigit(ch)) {
+				i = i + 1;
+				if (i >= code.length()) {
+					break;
+				}
+				ch = code.charAt(i);
+			}
+			word = code.substring(0, i);   //  鎴彇瀛楃涓�
+		} else if (Character.isDigit(start)) {
+			int pointerTimes = 0;
+			ch = code.charAt(0);
+
+			while (Character.isDigit(ch)
+					|| ((ch == '.') && pointerTimes == 0)) {
+				if (ch == '.') {
+					pointerTimes++;
+				}
+				i = i + 1;
+				if (i >= code.length()) {
+					break;
+				}
+				ch = code.charAt(i);
+			}
+			word = code.substring(0, i);
+		} else {
+			if(start == '<' || start == '>' ||start == '='|| start == ':') {
+				ch = code.charAt(1);
+			 
+				String signAdd = "" + start + ch;
+				
+				if (borderMap.containsKey(signAdd)) {
+					i = i + 2;
+					word = signAdd;
+				} else {
+					i = i + 1;
+					word = "" + start;
+				}
+			} else {
+				i = i + 1; 
+				word = "" + start; 
+			}
+		}
+		code = code.substring(i);
+			
+System.out.println(word);
+		
+		return word;
+	}
 
 	public static void main(String[] args) {
 		WordScanner scaner = new WordScanner();
 		scaner.writeToMap();
 		scaner.readCodeFromFile();
-		scaner.scan();
+		scaner.scan(scaner.code);
+		while (!"".equals(scaner.code)) {
+			scaner.read();
+		}
 	}
 }
