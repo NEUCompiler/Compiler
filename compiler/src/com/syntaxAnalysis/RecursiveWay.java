@@ -195,7 +195,6 @@ public class RecursiveWay {
 	
 	public static void main(String[] args){
 		RecursiveWay gramr = new RecursiveWay();
-		
 	}
 	
 
