@@ -9,23 +9,77 @@ import com.wordScanner.WordScanner;
  */
 public class RecursiveWay {
 	String current = "";
+	String word;
+	String single = "";
+	
+	WordScanner scanner = new WordScanner();
+	
+	public String char2(){
+		char ch = word.charAt(0);
+		word = word.substring(1);
+		
+		return "" + ch;
+	}
+	//拆开词函数
+	
+	public void chars(){
+		if(single.matches("[A-Za-z]")) {
+			single = char2();
+		}
+	}//25
+	
+	public void number(){
+		if(single.matches("[0-9]")){
+			single = char2();
+		}
+	}//26
 	
 	public void ID(){
-		
-	}
-	//2号语法
+		word = current + "#";
+		single = char2();
+		for(;!"#".equals(single);){
+		chars();
+		number();
+		}
+	}//2
+	
+	public void constants(){
+		ints();
+		real();
+	}//22
+	
+	private void real() {
+		word = current + "#";
+		single = char2();
+		for(;!"#".equals(single);){
+			ints();
+			if(".".equals(single)){
+				ints();
+			}else System.out.println("err");
+		}
+	}//24
+	
+	private void ints() {
+		word = current + "#";
+		single = char2();
+		for(;!"#".equals(single);){
+			number();
+		}	
+	}//23
 	
 	public void compoundStatement(){
-		do {
-		statementTable(); 
-		}
-		while(current == "") ;
-	}
-	//4陷入循环，待解决，为4号语法,curent在这没什么意义
+		if("begin".equals(current)){
+			statementTable();
+		}else System.out.println("err");
+		current = read();
+		if("end".equals(current)){
+			current = read();
+		}else System.out.println("err");
+	}//4
 	
 	private void statementTable() {
 		assignmentStatement();
-		for ( ;current == ";";){
+		for ( ;";".equals(current);){
 			current= read() ;
 			assignmentStatement();
 		}	
@@ -33,16 +87,15 @@ public class RecursiveWay {
 	
 	private void assignmentStatement() {
 		ID();
-		if (current == "="){
+		if (":=".equals(current)){
 			current = read ();
 			AE();
-		}
-		else System.out.println("err");
+		}else System.out.println("err");
 	}//9号
 	
 	private void AE() {
 		term();
-		for(;current == "w0";){
+		for(;"+".equals(current)||"-".equals(current);){
 			current = read();
 			term();
 		}
@@ -50,47 +103,42 @@ public class RecursiveWay {
 
 	private void term() {
 		factor();
-		for(;current == "w1";){
+		for(;"*".equals(current)||"/".equals(current);){
 			current = read();
 			factor();
 		}
 	}//19
 	
 	private void factor() {
-		if(current == "("){
+		if("(".equals(current)){
 			current = read ();
 			AE();
-			if( current != ")"){
+			if(!")".equals(current)){
 				System.out.println("err");
 			}
-		}
-		else quantity();	
+		}else quantity();	
 	}//20
 	
 	private void quantity() {
-		ID();
-		constant();
-	}//这里是产生了两个分支函数，待解决 21号
+		single = char2();
+		if("single".matches("[a-zA-Z]")) {
+			ID();
+		}else constant();
+	}//21
 	
 	private void constant() {
 		
 	}//22 待解决
 	
 	private void VD(){
-		if(current == "var"){
+		if("var".equals(current)){
 			IDTable();
 			current = read();
-			if(current == ":"){
+			if(":".equals(current)){
 				current = read();
 				type();
-			}
-			else {
-				System.out.println("err");
-			}
-		}
-		else{
-			System.out.println("err");
-		}	
+			}else System.out.println("err");
+		}else System.out.println("err");	
 	}//10
 	
 	private void type() {
@@ -98,7 +146,7 @@ public class RecursiveWay {
 	}//6待解决
 	
 	private void compoundStatement1(){
-		if(current == "begin"){
+		if("begin".equals(current)){
 			compoundStatement();
 		}
 		else assignmentStatement();
@@ -106,16 +154,15 @@ public class RecursiveWay {
 	
 	public void while1(){
 		or();
-		if(current == "do"){
+		if("do".equals(current)){
 			current = read();
 			compoundStatement1();
-		}
-		else System.out.println("err");
+		}else System.out.println("err");
 	}//11
 	
 	private void or() {
 		and();
-		for(;current == "or";){
+		for(;"or".equals(current);){
 			current = read();
 			and();
 		}	
@@ -123,14 +170,14 @@ public class RecursiveWay {
 
 	private void and() {
 		not();
-		for(;current == "and";){
+		for(;"and".equals(current);){
 			current = read();
 			not();
 		}	
 	}//14
 
 	private void not() {
-		for(;current == "not";){
+		for(;"not".equals(current);){
 			current = read();
 			boolTerm();
 		}	
@@ -138,10 +185,10 @@ public class RecursiveWay {
 	
 	public void IF(){
 		or();
-		if(current == "then"){
+		if("then".equals(current)){
 			current = read();
 			compoundStatement1();
-			if( current == "else"){
+			if( "else".equals(current)){
 				current = read();
 				compoundStatement1();
 			}else System.out.println("err");
@@ -150,33 +197,34 @@ public class RecursiveWay {
 	
 	public void boolTerm(){
 		AE();
-		if(current == "w2"){
+		if("<".equals(current)||">".equals(current)||"<=".equals(current)||">=".equals(current)){
 			current = read();
 			AE();
 		}else System.out.println("err");
 	}//17
 	
 	public void boollean(){
-		if(current == "("){
+		if("(".equals(current)){
 			current = read();
 			or();
-			if(current == ")"){
+			if(")".equals(current)){
 				current = read();
 			}else System.out.println("err");
-		}
-		else boolTerm();
+		}else boolTerm();
 	}//16
 
 	public void IDTable(){
 		ID();
-		for (;read() == ",";){
+		current = read();
+		for (;",".equals(current);){
 			current = read();
 			ID();
 		}
 	}//5号
 	
 	public void program(){
-		if(current == "program"){
+		current = read();
+		if("program".equals(current)){
 			current = read();
 			ID();
 			deputyprogram();
@@ -189,13 +237,13 @@ public class RecursiveWay {
 	}//3
 	
 	private String read() {
-		 String w = null ;
-		return w ;
+		 return scanner.read();
 	}//词法读取w
 	
 	public static void main(String[] args){
 		RecursiveWay gramr = new RecursiveWay();
-	}
+		
+	}//read()为词法分析要读取得词。current为本程序中当前词，通过read()来更新current变量。
 	
 
 }
