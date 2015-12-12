@@ -32,6 +32,7 @@ public class FourEquation {
 				String[] splits = line.split(" ");
 				colMap.put(splits[1], splits[2]);
 				priorMap.put(splits[0], colMap);
+				System.out.println(priorMap.toString());
 			}
 			
 			reader.close();
