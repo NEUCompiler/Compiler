@@ -133,8 +133,8 @@ public class FourEquation {
 		
 //		while()
 		
-
-
+		return 0;
+		
 	}	
 	
 	/*
