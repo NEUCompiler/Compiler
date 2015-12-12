@@ -59,8 +59,6 @@ public class FourEquation {
 		operandStack.push("#");
 		operatorStack.push("#");
 		
-		
-				
 		return result;
 	}
 	
