@@ -16,19 +16,6 @@ public class RecursiveWay {
 
 	WordScanner scanner = new WordScanner();
 
-	// public String real2(){
-	// if (word.indexOf(".") == 0) {
-	// word = word.substring(1);
-	// return ".";
-	// } else {
-	//
-	// }
-	// String[] splits = word.split(".");
-	//
-	// return splits[0];
-	//
-	// }
-
 	public String char2() {
 		char ch = word.charAt(0);
 		word = word.substring(1);
@@ -98,7 +85,7 @@ public class RecursiveWay {
 				System.out.println("成功啦！！");
 			}else
 				System.out.println("err");
-	}// 4复合语句的判断，主体部分**，
+	}// 4复合语句的判断，主体部分**，里面是主体架构，从begin 到最后的end.
 
 
 	private void statementTable() {
@@ -107,7 +94,7 @@ public class RecursiveWay {
 			current = read();
 			assignmentStatement();
 		}
-	}// 7号语句表的判断，主体部分*，
+	}// 7号语句表的判断，主体部分*，主要的部分语句，和赋值语句联系紧密
 
 	private void assignmentStatement() {
 		ID();
@@ -117,7 +104,7 @@ public class RecursiveWay {
 			AE();
 		} else
 			System.out.println("err");
-	}// 9号 赋值语句的判断，
+	}// 9号 赋值语句的判断，给语句赋值
 
 	private void AE() {
 		term();
@@ -125,7 +112,7 @@ public class RecursiveWay {
 			current = read();
 			term();
 		}
-	}// 18算术表达式的判断，
+	}// 18算术表达式的判断，主要的算术表达式：如：a:=b+2;
 
 	private void term() {
 		factor();
@@ -133,7 +120,7 @@ public class RecursiveWay {
 			current = read();
 			factor();
 		}
-	}// 19算术表达式中因子的判断
+	}// 19算术表达式中因子的判断,如：b+2
 
 	private void factor() {
 		if ("(".equals(current)) {
@@ -213,7 +200,8 @@ public class RecursiveWay {
 			current = read();
 		}else 
 			System.out.println("err");
-	}// 8
+	}// 8<8 compoundStatement1复合语句2> -> begin<7 statementTable语句表>end;|<9 assignmentStatement赋值语句>;
+	//这里是主要处理whlie,if的复合语句；
 
 	public void whiles() {
 		or();
@@ -222,7 +210,7 @@ public class RecursiveWay {
 			compoundStatement1();
 		} else
 			System.out.println("err");
-	}// 11
+	}// 11  <11 while>-><12 or> do <8 compoundStatement1复合语句>
 
 	private void or() {
 		and();
@@ -230,7 +218,7 @@ public class RecursiveWay {
 			current = read();
 			and();
 		}
-	}// 12
+	}// 12  <12 or>-><14 and>{or<14 and>}
 
 	private void and() {
 		not();
@@ -238,14 +226,14 @@ public class RecursiveWay {
 			current = read();
 			not();
 		}
-	}// 14
+	}// 14  <14 and>-><15 not>{and<15 not>}
 
 	private void not() {
 		if("not".equals(current)) {
 			current = read();
 			boolTerm();
 		}else booleans();	
-	}// 15
+	}// 15  <15 not>->not<16 booleans>|<16 booleans>
 
 	public void ifs() {
 		or();
@@ -259,7 +247,7 @@ public class RecursiveWay {
 				System.out.println("err");
 		} else
 			System.out.println("err");
-	}// 13
+	}// 13  <13 if> -> <12 or>then<8 compoundStatement1>else<8 compoundStatement1>
 
 	public void boolTerm() {
 		AE();
