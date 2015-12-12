@@ -12,6 +12,7 @@ public class RecursiveWay {
 	String current = "";
 	String word;
 	String single = "";
+	int type2 = 0;//类型说明，如果是整形为1，实数型为2，字符型为3
 
 	WordScanner scanner = new WordScanner();
 
@@ -31,7 +32,6 @@ public class RecursiveWay {
 	public String char2() {
 		char ch = word.charAt(0);
 		word = word.substring(1);
-
 		return "" + ch;
 	}// 拆开词函数
 
@@ -39,28 +39,25 @@ public class RecursiveWay {
 		if (single.matches("[A-Za-z]")) {
 			single = char2();
 		}
-	}// 25
+	}// 25判断是否是字符；是就再取后续字符
 
 	public void number() {
 		if (single.matches("[0-9]")) {
 			single = char2();
 		}
-	}// 26
+	}// 26判断是否是数字，是就再取后续字符
 
 	public void ID() {
 		word = current + "#";
 		single = char2();
 		while(!"#".equals(single)) {
 			chars();
+			if(!"#".equals(single)) {
 			number();
+			}
 		}
-		current = read();// **
-	}// 2
-
-	public void constants() {
-		ints();
-		real();
-	}// 22
+		current = read();
+	}// 2判断是否是符合标识符定义，a型,abc型,abc123型，
 
 	private void real() {
 		word = current + "#";
@@ -72,7 +69,7 @@ public class RecursiveWay {
 			} else
 				System.out.println("err");
 		}
-	}// 24
+	}// 24判断是否符合实数的定义，如3.4对，3.错;
 
 	private void ints() {
 		word = current + "#";
@@ -80,20 +77,29 @@ public class RecursiveWay {
 		for (; !"#".equals(single);) {
 			number();
 		}
-	}// 23
+	}// 23判断是否符合整形数的定义,
 
 	public void compoundStatement() {
 		if ("begin".equals(current)) {
 			current = read();
-			statementTable();
-		} else
+			while(!"end".equals(current)){
+				if("while".equals(current)){
+					whiles();
+				}
+				else if("if".equals(current)){
+					ifs();
+				}
+				else statementTable();
+			}
+		} else 
 			System.out.println("err");
-		// current = read();
-		if ("end".equals(current)) {
-			current = read();
-		} else
-			System.out.println("err");
-	}// 4
+		current = read();
+		if(".".equals(current)) {
+				System.out.println("成功啦！！");
+			}else
+				System.out.println("err");
+	}// 4复合语句的判断，主体部分**，
+
 
 	private void statementTable() {
 		assignmentStatement();
@@ -101,19 +107,17 @@ public class RecursiveWay {
 			current = read();
 			assignmentStatement();
 		}
-	}// 7号
+	}// 7号语句表的判断，主体部分*，
 
 	private void assignmentStatement() {
 		ID();
-		// current = read();
 		if (":=".equals(current)) {
 			current = read();
 			word = current + "#";
 			AE();
-			// current = read();//**
 		} else
 			System.out.println("err");
-	}// 9号
+	}// 9号 赋值语句的判断，
 
 	private void AE() {
 		term();
@@ -121,7 +125,7 @@ public class RecursiveWay {
 			current = read();
 			term();
 		}
-	}// 18
+	}// 18算术表达式的判断，
 
 	private void term() {
 		factor();
@@ -129,7 +133,7 @@ public class RecursiveWay {
 			current = read();
 			factor();
 		}
-	}// 19
+	}// 19算术表达式中因子的判断
 
 	private void factor() {
 		if ("(".equals(current)) {
@@ -140,26 +144,29 @@ public class RecursiveWay {
 			}
 		} else
 			quantity();
-	}// 20
+	}// 20  <20 因子factor> -> <21 算术量quantity> | ( <18 算术表达式AE> )
 
 	private void quantity() {
 		word = current;
 		single = char2();
-		if ("single".matches("[a-zA-Z]")) {
+		if (single.matches("[A-Za-z]")) {
 			ID();
 		} else
 			constant();
-	}// 21
+	}// 21  <21 算术量quantity> -> <2 标识符ID> | <22 常数constant>
 
 	private void constant() {
+		if(type2 == 1){
+			ints();
+		}
+		else real();
 		current = read();
-	}// 22 待解决
+	}// 22  有两条路线，如果前面定义的是整形变量，那么走ints(),如果定义的是实数，走real(),
 
 	private void VD() {
 		if ("var".equals(current)) {
 			current = read();
 			IDTable();
-			// current = read();
 			if (":".equals(current)) {
 				current = read();
 				type();
@@ -171,20 +178,44 @@ public class RecursiveWay {
 				System.out.println("err");
 		} else
 			System.out.println("err");
-	}// 10
+	}// 10  <10 变量说明VD>-> var <5 标识符表IDTable> ：<6 类型type> 
 
 	private void type() {
-		current = read();
-	}// 6待解决
+		if("integer".equals(current)||"int".equals(current)) {
+			current = read();
+		   type2 = 1;	
+		}//如果是整形的话
+		else if("real".equals(current)) {
+			current = read();
+			type2 =2 ;
+		}//如果是实数型
+		else if("char".equals(current)) {
+			current = read();
+			type2 = 3;
+		}//如果是字符型
+		else System.out.println("类型关键字错误");
+	}// 6确定变量的类型，以便后面算数表达式的检查；
 
 	private void compoundStatement1() {
 		if ("begin".equals(current)) {
-			compoundStatement();
+			current = read();
+			statementTable();
+			if("end".equals(current)){
+				current = read();
+				if(";".equals(current)){
+				}else 
+					System.out.println("err");	
+			}else 
+				System.out.println("关键字错误");
 		} else
 			assignmentStatement();
+		if(";".equals(current)){
+			current = read();
+		}else 
+			System.out.println("err");
 	}// 8
 
-	public void while1() {
+	public void whiles() {
 		or();
 		if ("do".equals(current)) {
 			current = read();
@@ -203,20 +234,20 @@ public class RecursiveWay {
 
 	private void and() {
 		not();
-		for (; "and".equals(current);) {
+		while("and".equals(current)) {
 			current = read();
 			not();
 		}
 	}// 14
 
 	private void not() {
-		while("not".equals(current)) {
+		if("not".equals(current)) {
 			current = read();
 			boolTerm();
-		}
+		}else booleans();	
 	}// 15
 
-	public void IF() {
+	public void ifs() {
 		or();
 		if ("then".equals(current)) {
 			current = read();
@@ -233,14 +264,14 @@ public class RecursiveWay {
 	public void boolTerm() {
 		AE();
 		if ("<".equals(current) || ">".equals(current) || "<=".equals(current)
-				|| ">=".equals(current)) {
+				|| ">=".equals(current)||"==".equals(current)) {
 			current = read();
 			AE();
 		} else
 			System.out.println("err");
-	}// 17
+	}// 17 <17 boolTerm>-><18 AE>w2<18 AE>
 
-	public void boollean() {
+	public void booleans() {
 		if ("(".equals(current)) {
 			current = read();
 			or();
@@ -248,34 +279,34 @@ public class RecursiveWay {
 				current = read();
 			} else
 				System.out.println("err");
-		} else
+		} else{
+			current = read();
 			boolTerm();
-	}// 16
+		}
+	}// 16  <16 booleans>-><17 boolTerm>|(<12 or>)
 
 	public void IDTable() {
 		ID();
-		// current = read();
 		while(",".equals(current)) {
 			current = read();
 			ID();
 		}
-	}// 5号
+	}// 5号  <5 标识符表IDTable> -><2 标识符ID> {， <2 标识符ID>}
 
 	public void program() {
 		current = read();
 		if ("program".equals(current)) {
 			current = read();
 			ID();
-			// current = read();///**
 			deputyprogram();
 		} else
 			System.out.println("err");
-	}// 1
+	}// 1  程序入口，<1 程序program> ->program <2 标识符ID> <3 分程序deputyProgram>
 
 	private void deputyprogram() {
 		VD();
 		compoundStatement();
-	}// 3
+	}// 3  <3 分程序deputyProgram> -><10 变量说明VD> <4 复合语句compoundStatement>
 
 	private String read() {
 		return scanner.read();
@@ -284,7 +315,6 @@ public class RecursiveWay {
 	public static void main(String[] args) {
 		RecursiveWay gramr = new RecursiveWay();
 		gramr.program();
-		System.out.println("成功啦！！");
 	}// read()为词法分析要读取得词。current为本程序中当前词，通过read()来更新current变量。
 
 }
