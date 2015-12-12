@@ -31,6 +31,11 @@ public class WordScanner {
 	private Map<String, String> idSignMap = new HashMap<>();
 	// 常数表。
 	private Map<String, String> constantMap = new HashMap<>();
+	
+	{
+		readCodeFromFile();
+		writeToMap();
+	}
 
 	/**
 	 * 从文本中读取代码。
@@ -43,7 +48,7 @@ public class WordScanner {
 			String line = null;
 
 			while ((line = reader.readLine()) != null) {
-				code = code + line;
+				code = code + line + " ";
 			}
 
 			reader.close();
