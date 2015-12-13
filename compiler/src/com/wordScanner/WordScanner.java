@@ -228,7 +228,7 @@ public class WordScanner {
 				}
 				ch = code.charAt(i);
 			}
-			word = code.substring(0, i);   //  鎴彇瀛楃涓�
+			word = code.substring(0, i);   //  鎴彇瀛楃涓?
 		} else if (Character.isDigit(start)) {
 			int pointerTimes = 0;
 			ch = code.charAt(0);
