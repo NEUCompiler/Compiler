@@ -277,5 +277,6 @@ System.out.println(word);
 		while (!"".equals(scaner.code)) {
 			scaner.read();
 		}
+		
 	}
 }
