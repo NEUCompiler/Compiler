@@ -113,6 +113,10 @@ public class WordScanner {
 				code = code.substring(1);
 			}
 			
+			if ("".equals(code)) {
+				break;
+			}
+			
 			start = code.charAt(0);
 			if ((start >= 'A' && start <= 'Z')
 					|| (start >= 'a' && start <= 'z')) {
@@ -208,6 +212,10 @@ public class WordScanner {
 			code = code.substring(1);
 		}
 		
+		if ("".equals(code)) {
+			return "";
+		}
+		
 		start = code.charAt(0);
 		if ((start >= 'A' && start <= 'Z')
 				|| (start >= 'a' && start <= 'z')) {
@@ -256,7 +264,7 @@ public class WordScanner {
 			}
 		}
 		code = code.substring(i);
-			
+		
 System.out.println(word);
 		
 		return word;
@@ -264,8 +272,7 @@ System.out.println(word);
 
 	public static void main(String[] args) {
 		WordScanner scaner = new WordScanner();
-		scaner.writeToMap();
-		scaner.readCodeFromFile();
+
 		scaner.scan(scaner.code);
 		while (!"".equals(scaner.code)) {
 			scaner.read();

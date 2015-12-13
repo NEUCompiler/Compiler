@@ -51,35 +51,15 @@ public class Priority {
 		System.out.println(priorMap.toString());
 	}
 	
-	
-	/**
-	 * 璁＄畻琛ㄨ揪寮忋��
-	 * @param expression 寰呰绠楃殑琛ㄨ揪寮忋��
-	 * @return 琛ㄨ揪寮忕粨鏋溿��
- 	 */
-	public String CalculateExpression(String expression) {
-		//杩愮畻绗︽爤銆�
-		Stack<String> operatorStack = new Stack<>();
-		//鎿嶄綔鏁版爤銆�
-		Stack<String> operandStack = new Stack<>();
-		String result = "";
-		
-		operandStack.push("#");
-		operatorStack.push("#");
-		
-		
-				
-		return result;
-	}
-	
 	/*
-	 * 生成四元式。 
+	 * 逆波兰式。 
 	 */
-	public void buildQuat() {
+	public void dealConverseExpression() {
 		String top;
 		Quat quat;
 		//待测试表达式。
 		String expression = "(1*5+2)/3";
+System.out.println(expression);
 		firstStack.push("#");
 		char[] ch = expression.toCharArray();
 		
@@ -95,7 +75,8 @@ public class Priority {
 				} else if (")".equals(item)) {
 					while (!"(".equals(top = firstStack.pop())) {
 						if (!"(".equals(top)) {
-							secondStack.push(top);				
+							secondStack.push(top);
+							buildQuat(top);
 						}
 					}
 				} else if ("(".equals(top)) {
@@ -105,21 +86,7 @@ public class Priority {
 				} else {
 					top = firstStack.pop();
 					secondStack.push(top);
-					quat = new Quat(top);
-					for (int j=0; j<2; j++) {
-						String secondTop = secondStack.pop();
-						
-						if (j == 1) {
-							quat.setThird(secondTop);
-						} else {
-							quat.setSecond(secondTop);
-						}
-						
-						double result = Double.parseDouble(quat.getSecond()) 
-								+ Double.parseDouble(quat.getThird());
-						quats.add(quat);
-						secondStack.push("" + result);
-					}
+					buildQuat(top);
 					firstStack.push(item);
 				}
 			} else {
@@ -130,9 +97,49 @@ public class Priority {
 		
 		while (!"#".equals(top = firstStack.pop())) {
 			secondStack.push(top);
+			buildQuat(top);
+			
 		}
 		System.out.println(secondStack.toString());
+		for (Quat q : quats) {
+			System.out.println(q.toString());
+		}
 		
+	}
+	
+	/**
+	 * 构建四元式。
+	 */
+	public void buildQuat(String top) {
+		Quat quat = new Quat(top);
+		for (int j=0; j<3; j++) {
+			String secondTop = secondStack.pop();
+			
+			if (j == 0) {
+				quat.setFirst(secondTop);
+			} else if (j == 1) {
+				quat.setThird(secondTop);
+			} else {
+				quat.setSecond(secondTop);
+				double result = 0;
+				if ("+".equals(quat.getFirst())) {
+					 result = Double.parseDouble(quat.getSecond()) 
+							+ Double.parseDouble(quat.getThird());
+				} else if ("-".equals(quat.getFirst())) {
+					 result = Double.parseDouble(quat.getSecond()) 
+							- Double.parseDouble(quat.getThird());
+				} else if ("*".equals(quat.getFirst())) {
+					 result = Double.parseDouble(quat.getSecond()) 
+							* Double.parseDouble(quat.getThird());
+				} else if ("/".equals(quat.getFirst())) {
+					 result = Double.parseDouble(quat.getSecond()) 
+							/ Double.parseDouble(quat.getThird());
+				}
+				quat.setFourth("" + result);
+				quats.add(quat);
+				secondStack.push("" + result);
+			}
+		}
 	}
 	
 	/**
@@ -150,6 +157,6 @@ public class Priority {
 	public static void main(String[] args) {
 		Priority priority =new Priority();
 		priority.initPriorMap();
-		priority.buildQuat();
+		priority.dealConverseExpression();
 	}
 }

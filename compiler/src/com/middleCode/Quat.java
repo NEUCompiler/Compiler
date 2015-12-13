@@ -83,6 +83,15 @@ public class Quat {
 	public void setFourth(String fourth) {
 		this.fourth = fourth;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Quat [first=" + first + ", second=" + second + ", third="
+				+ third + ", fourth=" + fourth + "]";
+	}
 	
 	
 	
