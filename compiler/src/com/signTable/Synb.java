@@ -1,7 +1,9 @@
 package com.signTable;
 
+import org.omg.CORBA.TypeCodeHolder;
+
 /**
- * 符号表元素实体类。
+ * 符号表总表元素实体类。
  * @author 刘鑫伟
  *
  */
@@ -9,35 +11,37 @@ public class Synb {
 	
 	//名字，标识符源码。
 	private String name;
-	//类型，指针，指向类型表相应项。
-	private String type;
-	//种类，种类编码。
-	private String cat;
-	//地址，指针，根据标识符的种类不同分别指向,PFINFL,CONSL,LENL,VALL。
-	private String addr;
+	//值(新增项)。
+	private String value;
+	/*
+	 * 类型，指针，指向类型表相应项。:i(整型)，r(实型)，c(字符型)，b(布尔型)， a(数组型)，
+	 * d(结构型)f(函数)，c(常量)，t(类型)，d(域名)，v,vn,vf(变量，换名形参，赋值形参)。
+	 */
+	private Type type;
+	//数据长度。
+	private int length;
 	
 	/**
 	 * 无参构造函数。
 	 */
 	public Synb() {
 	}
-
-
+	
 	/**
 	 * 有参构造函数。
 	 * @param name
+	 * @param value
 	 * @param type
 	 * @param cat
-	 * @param addr
+	 * @param length
 	 */
-	public Synb(String name, String type, String cat, String addr) {
+	public Synb(String name, String value, Type type, int length) {
 		super();
 		this.name = name;
+		this.value = value;
 		this.type = type;
-		this.cat = cat;
-		this.addr = addr;
+		this.length = length;
 	}
-
 
 	/**
 	 * @return the name
@@ -46,7 +50,6 @@ public class Synb {
 		return name;
 	}
 
-
 	/**
 	 * @param name the name to set
 	 */
@@ -54,54 +57,51 @@ public class Synb {
 		this.name = name;
 	}
 
+	/**
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value the value to set
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
 
 	/**
 	 * @return the type
 	 */
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
-
 
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 
-
 	/**
-	 * @return the cat
+	 * @return the length
 	 */
-	public String getCat() {
-		return cat;
+	public int getLength() {
+		return length;
 	}
 
-
 	/**
-	 * @param cat the cat to set
+	 * @param length the length to set
 	 */
-	public void setCat(String cat) {
-		this.cat = cat;
-	}
-
-
-	/**
-	 * @return the addr
-	 */
-	public String getAddr() {
-		return addr;
-	}
-
-
-	/**
-	 * @param addr the addr to set
-	 */
-	public void setAddr(String addr) {
-		this.addr = addr;
+	public void setLength(int length) {
+		this.length = length;
 	}
 	
 	
 	
 }
+	
+

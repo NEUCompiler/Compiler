@@ -5,7 +5,7 @@ package com.signTable;
  * @author 刘鑫伟
  *
  */
-public class Pfinf {
+public class Function {
 
 	//层次号，该过函静态层次嵌套号。
 	private String level;
@@ -21,7 +21,7 @@ public class Pfinf {
 	/**
 	 * 无参构造函数。
 	 */
-	public Pfinf() {
+	public Function() {
 	}
 		
 	
@@ -33,7 +33,7 @@ public class Pfinf {
 	 * @param entry
 	 * @param param
 	 */
-	public Pfinf(String level, String off, String fn, String entry, String param) {
+	public Function(String level, String off, String fn, String entry, String param) {
 		super();
 		this.level = level;
 		this.off = off;

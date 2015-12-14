@@ -5,7 +5,7 @@ package com.signTable;
  * @author 刘鑫伟
  *
  */
-public class Ainf {
+public class Array {
 
 	//数组的下界。
 	private String low;
@@ -19,7 +19,7 @@ public class Ainf {
 	/**
 	 * 无参构造函数。
 	 */
-	public Ainf() {
+	public Array() {
 	}
 	
 	/**
@@ -29,7 +29,7 @@ public class Ainf {
 	 * @param ctp
 	 * @param clen
 	 */
-	public Ainf(String low, String up, String ctp, String clen) {
+	public Array(String low, String up, String ctp, String clen) {
 		super();
 		this.low = low;
 		this.up = up;

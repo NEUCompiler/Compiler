@@ -5,7 +5,7 @@ package com.signTable;
  * @author 刘鑫伟
  *
  */
-public class Rinf {
+public class Struts {
 	
 	//结构的域名。
 	private String id;
@@ -17,7 +17,7 @@ public class Rinf {
 	/**
 	 * 无参构造函数。
 	 */
-	public Rinf() {
+	public Struts() {
 	}
 	
 	/**
@@ -26,7 +26,7 @@ public class Rinf {
 	 * @param off
 	 * @param tp
 	 */
-	public Rinf(String id, String off, String tp) {
+	public Struts(String id, String off, String tp) {
 		super();
 		this.id = id;
 		this.off = off;
