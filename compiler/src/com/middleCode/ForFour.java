@@ -1,12 +1,15 @@
 package com.middleCode;
 
 import java.util.ArrayList;
+import java.util.zip.CRC32;
+
+import org.omg.CORBA.CTX_RESTRICT_SCOPE;
 
 import com.wordScanner.WordScanner;
 
 public class ForFour {
 	
-	private int i = 1,j=1;
+	private int i = 1,j=1,k=1;
 
 	private ArrayList<Quat> quats = new ArrayList<>();
 	WordScanner scanner = new WordScanner();
@@ -20,7 +23,7 @@ public class ForFour {
 	public void forRead() {
 		String aString;
 		Quat quat;
-		while((aString=read()) != null) {
+		while(!"".equals((aString=read()))) {
 			if("program".equals(aString)) {
 				quat = new Quat();
 				forProgram(quat);
@@ -44,8 +47,7 @@ public class ForFour {
 				forElse(quat);
 			}
 			else if(":=".equals(aString)) {
-				quat = new Quat();
-				forSuanshu(quat);
+				forSuanshu();
 			}
 			else if(("end".equals(aString))&&(";".equals(read()))) {
 				quat = new Quat();
@@ -57,6 +59,7 @@ public class ForFour {
 		    }
 		}
 		
+		System.out.println(quats.toString());
 	} 
 	
 	public void forProgram(Quat quat) {
@@ -84,16 +87,18 @@ public class ForFour {
 		String ifSecond=read();
 		quat.setFirst(ifSecond);
 		String ifThird=read();
-		quat.setFirst(ifThird);
+		quat.setThird(ifThird);
 		String  result = "t" + i++;
 		quat.setFourth(result);
+		
 		quats.add(quat);
 		
 		Quat secondQuat=new Quat();
 		secondQuat.setFirst("if");
 		secondQuat.setSecond(result);
-		//第四项要指向if else之后语句
-		
+		String  result1 = "t" + i++;
+		secondQuat.setFourth(result1);
+	
 		quats.add(secondQuat);
 		
 		Quat thirdQuat=new Quat();
@@ -104,7 +109,7 @@ public class ForFour {
 	
 	public void forElse(Quat quat) {
 		quat.setFirst("else");
-		String D="t"+i;
+		String D="t"+k++;
 		quat.setSecond(D);
 	
 		quats.add(quat);
@@ -126,17 +131,40 @@ public class ForFour {
 		quats.add(fivethQuat);	
 	}
 	
-	public void forSuanshu(Quat quat) {
+	public void forSuanshu() {
+		Quat quat = new Quat();
 		String cString;
-		while((cString=read())!=";") {
-			cString=cString+read();
+		String dString = null;
+		while(!(cString=read()).matches(";||if||while||while||end")) {
+			dString=dString+cString;
 		}
-		Priority priority = new Priority();
+        //弹出while时，说明此时已经读完一个表达式或字符或数字
+		//if(isExpression(dString)){
+		//此处调用计算表达式或字符或数字的函数（dstring)
 		
-////		ArrayList<Quat> quaList = priority.dealConverseExpression(cString);
-//		for (Quat q : quaList) {
-//			quats.add(q);
-//		}
+		
+		if(cString.equals(";")){
+			forSuanshu();
+		}
+		else if(cString.equals("if")){
+			Quat quat1 = new Quat();
+			forif(quat1);
+		}
+		else if (cString.equals("while")) {
+			Quat quat2 = new Quat();
+			forwhile(quat2);
+		}
+		else if(cString.equals("end"))	{
+			if(";".equals(read())){
+				Quat quat3 = new Quat();
+				forEndIfWhileLast(quat);
+			}
+			else {
+				Quat quat4 = new Quat();
+				forEndLast(quat);
+			}
+		}
+			
 	}
 	
 	public void forEndLast(Quat quat) {
@@ -149,22 +177,24 @@ public class ForFour {
 	
 	public void forEndIfWhileLast(Quat quat) {
 		quat.setFirst("end");
-		String dString;
+		String dString=null;
 		
 		for (int i=quats.size(); i>0; i--) {
 			
-			String s = quats.get(i).getFirst();
+			String s = quats.get(i-1).getFirst();
 			
 			if ("if".equals(s) || "while".equals(s)) {
-			dString=quats.get(i).getSecond();
+			dString=quats.get(i).getFourth();
 				break;
 			}
 		}
 		
-		quat.setSecond("dString");
+		quat.setSecond(dString);
 		
 		quats.add(quat);
 	}
+	
+
 	private String read() {
 		return scanner.read();
 	}// 词法读取w
