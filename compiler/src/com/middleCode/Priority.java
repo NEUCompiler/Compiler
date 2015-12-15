@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import com.wordScanner.WordScanner;
+
 /**
  * 优先级。
  * 
@@ -62,11 +64,11 @@ public class Priority {
 //System.out.println(expression);
 		firstStack.push("#");
 		char[] ch = expression.toCharArray();
+		WordScanner scanner = new WordScanner();
+		ArrayList<String> words = scanner.read(expression);
+		System.out.println(words.toString());
 		
-		String item;
-		for (int i=0; i<ch.length; i++) {
-			
-			item = "" + ch[i];
+		for (String item : words) {
 			if (isOperator(item)) {
 				top = firstStack.peek();
 				
@@ -173,7 +175,7 @@ public class Priority {
 	public static void main(String[] args) {
 		Priority priority =new Priority();
 //		priority.initPriorMap();
-		String expression = "(1*5+2)/3";
+		String expression = "(2+5)+12.0";
 		priority.dealConverseExpression(expression);
 	}
 }

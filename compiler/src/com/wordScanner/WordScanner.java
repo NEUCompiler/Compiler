@@ -3,6 +3,7 @@ package com.wordScanner;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -228,7 +229,7 @@ public class WordScanner {
 				}
 				ch = code.charAt(i);
 			}
-			word = code.substring(0, i);   //  鎴彇瀛楃涓?
+			word = code.substring(0, i);   
 		} else if (Character.isDigit(start)) {
 			int pointerTimes = 0;
 			ch = code.charAt(0);
@@ -268,6 +269,16 @@ public class WordScanner {
 //System.out.println(word);
 		
 		return word;
+	}
+	
+	public ArrayList<String> read(String code) {
+		ArrayList<String> result = new ArrayList<>();
+		this.code = code;
+		while (!"".equals(this.code)) {
+			result.add(read());
+		}
+		
+		return result;
 	}
 
 	public static void main(String[] args) {
