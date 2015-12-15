@@ -169,5 +169,6 @@ public class ForFour {
 		return scanner.read();
 	}// 词法读取w
 
+	
 }
 
