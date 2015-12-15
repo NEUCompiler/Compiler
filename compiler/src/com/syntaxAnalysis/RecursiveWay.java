@@ -393,6 +393,8 @@ public class RecursiveWay {
 		return scanner.read();
 	}
 
+	
+	
 	// read()为词法分析要读取得词。current为本程序中当前词，通过read()来更新current变量。
 	public static void main(String[] args) {
 		RecursiveWay gramr = new RecursiveWay();
