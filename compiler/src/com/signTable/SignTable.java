@@ -1,8 +1,14 @@
 package com.signTable;
 
+import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Spliterator;
+
+import javax.lang.model.element.Element;
+
+import org.omg.IOP.Codec;
 
 import com.middleCode.Priority;
 import com.wordScanner.WordScanner;
@@ -32,6 +38,8 @@ public class SignTable {
 	private List<Vall> vallList = new ArrayList<>();
 	// 执行状态。
 	private String state;
+	private String preWord;
+	private String kind;
 
 	WordScanner scanner = new WordScanner();
 	Priority priority = new Priority();
@@ -51,6 +59,20 @@ public class SignTable {
 
 			if ("var".equals(word)) {
 				dealWithBasicDefine();
+			} else if ("if".equals(preWord)) {
+				kind = "if";
+				preWord = null;
+				String code = getBooleanExpression(word);
+				dealWithIf(judgeBooleanExpression(code));
+			} else if ("else".equals(word)) {
+				return;
+			} else if ("while".equals(word)){
+				kind = "while";
+				word = read();
+				String code = getBooleanExpression(word);
+				while(judgeBooleanExpression(code)) {
+					dealWith();
+				}
 			} else if (synbTable.containsKey(word)
 					&& ":=".equals(next = read())) {
 				dealWithUse(word);
@@ -78,7 +100,7 @@ public class SignTable {
 			}
 			code = code + word;
 		}
-		// System.out.println(code);
+		 System.out.println(code);
 
 		String[] splits = code.split(",");
 		if ("integer".equals(type)) {
@@ -109,20 +131,15 @@ public class SignTable {
 	public void dealWithUse(String variable) {
 		String code = "";
 		String word;
-		while (!(word = read()).matches("\\;||end")) {
-			if (synbTable.containsKey(word)) {
-				code = code + synbTable.get(word).getValue();
-			} else {
-				code = code + word;
-			}
+		while (!(word = read()).matches("\\;||end||if||while")) {
+			code = code + replaceVariable(word);
 		}
+		preWord = word;
 		System.out.println(variable + ":=" + code);
 
 		if (isExpression(code)) {
 			//setScond有问题。
-			priority.dealConverseExpression(code);
-			
-			String result = priority.getQuats().get(priority.getQuats().size()-1).getFourth();
+			String result = calculateExpression(code);
 			synbTable.get(variable).setValue(result);
 		} else if (synbTable.containsKey(code)){
 			synbTable.get(variable).setValue(synbTable.get(code).getValue());
@@ -130,7 +147,104 @@ public class SignTable {
 			synbTable.get(variable).setValue(code);;
 		}
 	}
+	
+	/**
+	 * if语句的处理。
+	 * @param isOK
+	 */
+	public void dealWithIf(Boolean isOK) {
+		String word;
+		String code;
+		
+		if (isOK) {
+				dealWith();
+				while (!(word = read()).matches("\\;||end||if||while"));
+		} else {
+			while (!"else".equals((word = read())));
+			dealWith();
+		}
+	}
+	
+	public void dealWithWhile() {
+		
+	}
 
+	/**
+	 * 获得boolean表达式。
+	 */
+	public String getBooleanExpression(String variable) {
+		String word = "";
+		String code = variable;
+		if (synbTable.containsKey(code)) {
+			code = synbTable.get(code).getValue();
+		}
+		
+		if ("if".equals(kind)) {
+			while (!"then".equals(word = read())) {
+				code = code + word;
+			}
+		} else if ("while".equals(kind)) {
+			while (!"do".equals(word = read())) {
+				code = code + word;
+			}
+		}
+		return code;
+	}
+	
+	/**
+	 * 判断boolean表达式。
+	 * @param variable
+	 * @return
+	 */
+	public Boolean judgeBooleanExpression(String code) {
+		Boolean isOK = true;
+		String left = "";
+		String right = "";
+		double leftResult;
+		double rightResult;
+		
+		String[] splits = null;
+		
+		if (code.contains("==")) {
+			splits = code.split("==");
+			left = splits[0];
+			right = splits[1];
+			leftResult = Double.parseDouble(calculateExpression(left));
+			rightResult = Double.parseDouble(calculateExpression(right));
+			isOK = leftResult == rightResult;
+		} else if (code.contains(">=")) {
+			splits = code.split(">=");
+			left = splits[0];
+			right = splits[1];
+			leftResult = Double.parseDouble(calculateExpression(left));
+			rightResult = Double.parseDouble(calculateExpression(right));
+			isOK = leftResult >= rightResult;
+		} else if (code.contains("<=")) {
+			splits = code.split("<=");
+			left = splits[0];
+			right = splits[1];
+			leftResult = Double.parseDouble(calculateExpression(left));
+			rightResult = Double.parseDouble(calculateExpression(right));
+			isOK = leftResult <= rightResult;
+		} else if (code.contains("<")) {
+			splits = code.split("<");
+			left = splits[0];
+			right = splits[1];
+			leftResult = Double.parseDouble(calculateExpression(left));
+			rightResult = Double.parseDouble(calculateExpression(right));
+			isOK = leftResult < rightResult;
+		} else if (code.contains(">")) {
+			splits = code.split(">");
+			left = splits[0];
+			right = splits[1];
+			leftResult = Double.parseDouble(calculateExpression(left));
+			rightResult = Double.parseDouble(calculateExpression(right));
+			isOK = leftResult > rightResult;
+		}
+		
+		return isOK;
+	}
+	
 	/**
 	 * 读当前第一个单词。
 	 * 
@@ -153,7 +267,36 @@ public class SignTable {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 计算表达式。
+	 * @param expression
+	 * @return
+	 */
+	public String calculateExpression(String expression) {
+		String result;
+		
+		priority.dealConverseExpression(expression);
+		result = priority.getQuats().get(priority.getQuats().size()-1).getFourth();
+		return result;
+	}
+	
+	/**
+	 * 替换变量。
+	 * @param word
+	 * @return
+	 */
+	public String replaceVariable(String word) {
+		String code = "";
+		if (synbTable.containsKey(word)) {
+			code = code + synbTable.get(word).getValue();
+		} else {
+			code = code + word;
+		}
+		
+		return code;
+	}
+	
 	public static void main(String[] args) {
 		SignTable sign = new SignTable();
 		sign.dealWith();

@@ -63,10 +63,9 @@ public class Priority {
 		//待测试表达式。
 //System.out.println(expression);
 		firstStack.push("#");
-		char[] ch = expression.toCharArray();
 		WordScanner scanner = new WordScanner();
 		ArrayList<String> words = scanner.read(expression);
-		System.out.println(words.toString());
+//		System.out.println(words.toString());
 		
 		for (String item : words) {
 			if (isOperator(item)) {
@@ -100,7 +99,12 @@ public class Priority {
 		while (!"#".equals(top = firstStack.pop())) {
 			secondStack.push(top);
 			buildQuat(top);
-			
+		}
+		
+		if (firstStack.size() == 0 && secondStack.size() != 0) {
+			Quat q = new Quat(null);
+			q.setFourth(secondStack.pop());
+			quats.add(q);
 		}
 //		System.out.println(secondStack.toString());
 		for (Quat q : quats) {
@@ -175,7 +179,7 @@ public class Priority {
 	public static void main(String[] args) {
 		Priority priority =new Priority();
 //		priority.initPriorMap();
-		String expression = "(2+5)+12.0";
+		String expression = "1";
 		priority.dealConverseExpression(expression);
 	}
 }
