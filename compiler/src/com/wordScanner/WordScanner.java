@@ -265,7 +265,7 @@ public class WordScanner {
 		}
 		code = code.substring(i);
 		
-System.out.println(word);
+//System.out.println(word);
 		
 		return word;
 	}

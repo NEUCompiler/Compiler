@@ -30,6 +30,21 @@ public class Synb {
 	/**
 	 * 有参构造函数。
 	 * @param name
+	 * @param type
+	 * @param length
+	 */
+	public Synb(String name, Type type, int length) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.length = length;
+	}
+
+
+
+	/**
+	 * 有参构造函数。
+	 * @param name
 	 * @param value
 	 * @param type
 	 * @param cat
@@ -99,8 +114,15 @@ public class Synb {
 	public void setLength(int length) {
 		this.length = length;
 	}
-	
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "[name=" + name + ", value=" + value + ", type=" + type
+				+ ", length=" + length + "]";
+	}
 	
 }
 	

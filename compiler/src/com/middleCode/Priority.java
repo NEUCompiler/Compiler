@@ -48,18 +48,18 @@ public class Priority {
 			throw new RuntimeException(e);
 		}
 		
-		System.out.println(priorMap.toString());
+//		System.out.println(priorMap.toString());
 	}
 	
 	/*
 	 * 逆波兰式。 
 	 */
-	public void dealConverseExpression() {
+	public void dealConverseExpression(String expression) {
 		String top;
 		Quat quat;
+		initPriorMap();
 		//待测试表达式。
-		String expression = "(1*5+2)/3";
-System.out.println(expression);
+//System.out.println(expression);
 		firstStack.push("#");
 		char[] ch = expression.toCharArray();
 		
@@ -100,9 +100,9 @@ System.out.println(expression);
 			buildQuat(top);
 			
 		}
-		System.out.println(secondStack.toString());
+//		System.out.println(secondStack.toString());
 		for (Quat q : quats) {
-			System.out.println(q.toString());
+//			System.out.println(q.toString());
 		}
 		
 	}
@@ -154,9 +154,26 @@ System.out.println(expression);
 		return false;
 	}
 	
+	
+	
+	/**
+	 * @return the quats
+	 */
+	public ArrayList<Quat> getQuats() {
+		return quats;
+	}
+
+	/**
+	 * @param quats the quats to set
+	 */
+	public void setQuats(ArrayList<Quat> quats) {
+		this.quats = quats;
+	}
+
 	public static void main(String[] args) {
 		Priority priority =new Priority();
-		priority.initPriorMap();
-		priority.dealConverseExpression();
+//		priority.initPriorMap();
+		String expression = "(1*5+2)/3";
+		priority.dealConverseExpression(expression);
 	}
 }
