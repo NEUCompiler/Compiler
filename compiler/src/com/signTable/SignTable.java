@@ -37,9 +37,9 @@ public class SignTable {
 	// 活动记录表。
 	private List<Vall> vallList = new ArrayList<>();
 	// 执行状态。
-	private String state;
 	private String preWord;
-	private String kind;
+	private String state;
+	private String code;
 
 	WordScanner scanner = new WordScanner();
 	Priority priority = new Priority();
@@ -47,38 +47,37 @@ public class SignTable {
 	public void dealWith() {
 		String word;
 		String next;
+		if ("while".equals(state)) {
+			code = scanner.getCode();
+		} else if ("whileEnd".equals(state)) {
+			
+		}
+		
 		while (!"".equals(word = read())) {
-
-			if ("program".equals(word)) {
-				state = word;
-			} else if ("begin".equals(word)) {
-				state = word;
-			}
 
 			// System.out.println(word);
 
 			if ("var".equals(word)) {
 				dealWithBasicDefine();
 			} else if ("if".equals(preWord)) {
-				kind = "if";
+				state = "if";
 				preWord = null;
 				String code = getBooleanExpression(word);
 				dealWithIf(judgeBooleanExpression(code));
 			} else if ("else".equals(word)) {
 				return;
 			} else if ("while".equals(word)){
-				kind = "while";
-				word = read();
-				String code = getBooleanExpression(word);
-				while(judgeBooleanExpression(code)) {
-					dealWith();
-				}
+				dealWithWhile(word);
 			} else if (synbTable.containsKey(word)
 					&& ":=".equals(next = read())) {
 				dealWithUse(word);
 			}
+			
 		}
 
+		if ("while".equals(state)) {
+			scanner.setCode(code);
+		}
 		System.out.println(synbTable.toString());
 	}
 
@@ -165,8 +164,14 @@ public class SignTable {
 		}
 	}
 	
-	public void dealWithWhile() {
-		
+	public void dealWithWhile(String word) {
+		state = "while";
+		word = read();
+		String code = getBooleanExpression(word);
+		while(judgeBooleanExpression(code)) {
+			dealWith();
+		}
+		while (!"end".equals(read()));
 	}
 
 	/**
@@ -175,15 +180,15 @@ public class SignTable {
 	public String getBooleanExpression(String variable) {
 		String word = "";
 		String code = variable;
-		if (synbTable.containsKey(code)) {
-			code = synbTable.get(code).getValue();
-		}
+//		if (synbTable.containsKey(code)) {
+//			code = synbTable.get(code).getValue();
+//		}
 		
-		if ("if".equals(kind)) {
+		if ("if".equals(state)) {
 			while (!"then".equals(word = read())) {
 				code = code + word;
 			}
-		} else if ("while".equals(kind)) {
+		} else if ("while".equals(state)) {
 			while (!"do".equals(word = read())) {
 				code = code + word;
 			}
@@ -275,7 +280,7 @@ public class SignTable {
 	 */
 	public String calculateExpression(String expression) {
 		String result;
-		
+		expression = replaceVariableForExpression(expression);
 		priority.dealConverseExpression(expression);
 		result = priority.getQuats().get(priority.getQuats().size()-1).getFourth();
 		return result;
@@ -287,14 +292,28 @@ public class SignTable {
 	 * @return
 	 */
 	public String replaceVariable(String word) {
-		String code = "";
 		if (synbTable.containsKey(word)) {
-			code = code + synbTable.get(word).getValue();
-		} else {
-			code = code + word;
+			word = synbTable.get(word).getValue();
+		} 
+		
+		return word;
+	}
+	
+	/**
+	 * 将带变量的表达式转换为数字表达式。
+	 * @param code
+	 * @return
+	 */
+	public String replaceVariableForExpression(String expression) {
+		String result = "";
+		WordScanner wordScanner = new WordScanner();
+		ArrayList<String> words = wordScanner.read(expression);
+		
+		for (String word : words) {
+			result = result + replaceVariable(word);
 		}
 		
-		return code;
+		return result;
 	}
 	
 	public static void main(String[] args) {

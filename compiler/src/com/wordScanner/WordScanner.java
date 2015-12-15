@@ -57,7 +57,7 @@ public class WordScanner {
 			ex.printStackTrace();
 		}
 		// code = code.replace(" ", "");
-		System.out.println(code);
+//		System.out.println(code);
 
 	}
 
@@ -279,6 +279,21 @@ public class WordScanner {
 		}
 		
 		return result;
+	}
+
+	
+	/**
+	 * @return the code
+	 */
+	public String getCode() {
+		return code;
+	}
+
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public static void main(String[] args) {
