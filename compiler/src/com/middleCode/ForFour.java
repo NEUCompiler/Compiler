@@ -133,10 +133,10 @@ public class ForFour {
 		}
 		Priority priority = new Priority();
 		
-		ArrayList<Quat> quaList = priority.dealConverseExpression(cString);
-		for (Quat q : quaList) {
-			quats.add(q);
-		}
+////		ArrayList<Quat> quaList = priority.dealConverseExpression(cString);
+//		for (Quat q : quaList) {
+//			quats.add(q);
+//		}
 	}
 	
 	public void forEndLast(Quat quat) {
