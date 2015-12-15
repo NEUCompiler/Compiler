@@ -311,6 +311,9 @@ public class RecursiveWay {
 		}
 	}
 	
+	
+	
+	
 	// 24判断是否符合实数的定义，如3.4对，3.错;
 	private void real() {
 		word = current + "#";
