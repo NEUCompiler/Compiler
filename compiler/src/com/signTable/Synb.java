@@ -118,8 +118,8 @@ public class Synb {
 	 */
 	@Override
 	public String toString() {
-		return "[name=" + name + ", value=" + value + ", type=" + type
-				+ ", length=" + length + "]";
+		return "name=" + name + ", value=" + value + ", type=" + type
+				+ ", length=" + length;
 	}
 	
 }

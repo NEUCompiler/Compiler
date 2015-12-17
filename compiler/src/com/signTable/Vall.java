@@ -96,8 +96,8 @@ public class Vall {
 	 */
 	@Override
 	public String toString() {
-		return "[belongs=" + belongs + ", name=" + name + ", value="
-				+ value + ", action=" + action + "]";
+		return "belongs=" + belongs + ", name=" + name + ", value="
+				+ value + ", action= " + action;
 	}
 
 }

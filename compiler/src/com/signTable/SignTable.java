@@ -31,8 +31,8 @@ public class SignTable {
 	private List<Function> functionTable = new ArrayList<>();
 	// 活动记录表。
 	private Stack<ArrayList<Vall>> vallStack = new Stack<>();
-	private List<Vall> globalList = new ArrayList<>();
-	
+	private ArrayList<Vall> globalList = new ArrayList<>();
+
 	// 执行状态。
 	private Vall vall;
 	private String preWord;
@@ -47,9 +47,9 @@ public class SignTable {
 		if ("while".equals(state)) {
 			code = scanner.getCode();
 		} else if ("whileEnd".equals(state)) {
-			
+
 		}
-		
+
 		while (!"".equals(word = readWord())) {
 
 			// System.out.println(word);
@@ -63,19 +63,18 @@ public class SignTable {
 				dealWithIf(judgeBooleanExpression(code));
 			} else if ("else".equals(word)) {
 				return;
-			} else if ("while".equals(word)){
+			} else if ("while".equals(word)) {
 				dealWithWhile(word);
-			} else if (synbTable.containsKey(word)
-					&& ":=".equals(readWord())) {
+			} else if (synbTable.containsKey(word) && ":=".equals(readWord())) {
 				dealWithUse(word);
 			}
-			
+
 		}
 
 		if ("while".equals(state)) {
 			scanner.setCode(code);
 		}
-//		System.out.println(synbTable.toString());
+		// System.out.println(synbTable.toString());
 	}
 
 	public void dealWithArray() {
@@ -95,12 +94,12 @@ public class SignTable {
 				continue;
 			}
 			code = code + word;
-			
+
 			if (!",".equals(word)) {
 				buildVallList("var " + word + "|" + word);
 			}
 		}
-//		 System.out.println(code);
+		// System.out.println(code);
 
 		String[] splits = code.split(",");
 		if ("integer".equals(type)) {
@@ -135,46 +134,51 @@ public class SignTable {
 			code = code + replaceVariable(word);
 		}
 		preWord = word;
-//		System.out.println(variable + ":=" + code);
+		// System.out.println(variable + ":=" + code);
 
 		if (isExpression(code)) {
-			//setScond有问题。
+			// setScond有问题。
 			String result = calculateExpression(code);
 			synbTable.get(variable).setValue(result);
-		} else if (synbTable.containsKey(code)){
+		} else if (synbTable.containsKey(code)) {
 			synbTable.get(variable).setValue(synbTable.get(code).getValue());
 		} else {
-			synbTable.get(variable).setValue(code);;
+			synbTable.get(variable).setValue(code);
+			;
 		}
-		
+
 		buildVallList(variable + ":=" + code + "|" + variable);
 	}
-	
+
 	/**
 	 * if语句的处理。
+	 * 
 	 * @param isOK
 	 */
 	public void dealWithIf(Boolean isOK) {
 		String word;
 		String code;
-		
+
 		if (isOK) {
-				dealWith();
-				while (!(word = readWord()).matches("\\;||end||if||while"));
+			dealWith();
+			while (!(word = readWord()).matches("\\;||end||if||while"))
+				;
 		} else {
-			while (!"else".equals((word = readWord())));
+			while (!"else".equals((word = readWord())))
+				;
 			dealWith();
 		}
 	}
-	
+
 	public void dealWithWhile(String word) {
 		state = "while";
 		word = readWord();
 		String code = getBooleanExpression(word);
-		while(judgeBooleanExpression(code)) {
+		while (judgeBooleanExpression(code)) {
 			dealWith();
 		}
-		while (!"end".equals(readWord()));
+		while (!"end".equals(readWord()))
+			;
 	}
 
 	/**
@@ -183,10 +187,10 @@ public class SignTable {
 	public String getBooleanExpression(String variable) {
 		String word = "";
 		String code = variable;
-//		if (synbTable.containsKey(code)) {
-//			code = synbTable.get(code).getValue();
-//		}
-		
+		// if (synbTable.containsKey(code)) {
+		// code = synbTable.get(code).getValue();
+		// }
+
 		if ("if".equals(state)) {
 			while (!"then".equals(word = readWord())) {
 				code = code + word;
@@ -198,9 +202,10 @@ public class SignTable {
 		}
 		return code;
 	}
-	
+
 	/**
 	 * 判断boolean表达式。
+	 * 
 	 * @param variable
 	 * @return
 	 */
@@ -210,9 +215,9 @@ public class SignTable {
 		String right = "";
 		double leftResult;
 		double rightResult;
-		
+
 		String[] splits = null;
-		
+
 		if (code.contains("==")) {
 			splits = code.split("==");
 			left = splits[0];
@@ -249,10 +254,10 @@ public class SignTable {
 			rightResult = Double.parseDouble(calculateExpression(right));
 			isOK = leftResult > rightResult;
 		}
-		
+
 		return isOK;
 	}
-	
+
 	/**
 	 * 读当前第一个单词。
 	 * 
@@ -264,8 +269,10 @@ public class SignTable {
 
 	/**
 	 * 判断是不是表达式。
-	 * @param code 带判断代码。
-	 * @return 
+	 * 
+	 * @param code
+	 *            带判断代码。
+	 * @return
 	 */
 	public boolean isExpression(String code) {
 
@@ -275,9 +282,10 @@ public class SignTable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 计算表达式。
+	 * 
 	 * @param expression
 	 * @return
 	 */
@@ -285,25 +293,28 @@ public class SignTable {
 		String result;
 		expression = replaceVariableForExpression(expression);
 		priority.dealConverseExpression(expression);
-		result = priority.getQuats().get(priority.getQuats().size()-1).getFourth();
+		result = priority.getQuats().get(priority.getQuats().size() - 1)
+				.getFourth();
 		return result;
 	}
-	
+
 	/**
 	 * 替换变量。
+	 * 
 	 * @param word
 	 * @return
 	 */
 	public String replaceVariable(String word) {
 		if (synbTable.containsKey(word)) {
 			word = synbTable.get(word).getValue();
-		} 
-		
+		}
+
 		return word;
 	}
-	
+
 	/**
 	 * 将带变量的表达式转换为数字表达式。
+	 * 
 	 * @param code
 	 * @return
 	 */
@@ -311,16 +322,17 @@ public class SignTable {
 		String result = "";
 		WordScanner wordScanner = new WordScanner();
 		ArrayList<String> words = wordScanner.readWord(expression);
-		
+
 		for (String word : words) {
 			result = result + replaceVariable(word);
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 构建活动记录。
+	 * 
 	 * @param word
 	 */
 	public void buildVallList(String word) {
@@ -328,31 +340,60 @@ public class SignTable {
 		String[] splits = word.split("\\|");
 		String action = splits[0];
 		word = splits[1];
-		
+
 		vall.setName(word);
 		vall.setAction(action);
 		if (synbTable.containsKey(word)) {
 			vall.setValue(synbTable.get(word).getValue());
-			
+
 			if (synbTable.get(word).getType() == Type.FUNCTION) {
-				
+
 			} else {
 				vall.setBelongs("global");
 			}
-			
+
 		} else {
 			vall.setBelongs("global");
 			vall.setValue("null");
 		}
-		
+
 		globalList.add(vall);
 	}
-	
+
+	/**
+	 * 将单个活动记录表压入栈。
+	 */
+	public void pushVallListToStack() {
+		vallStack.push(globalList);
+	}
+
+	/**
+	 * 输出表。
+	 */
+	public void display() {
+		ArrayList<Vall> list;
+
+		pushVallListToStack();
+		System.out.println("符号表总表：");
+		for (String key : synbTable.keySet()) {
+			System.out.println(synbTable.get(key).toString());
+		}
+
+		System.out.println("\n活动记录表：");
+		for (int i = vallStack.size(); i > 0; i--) {
+			list = vallStack.pop();
+
+			for (Vall vall : list) {
+				System.out.println(vall.toString());
+			}
+		}
+
+	}
+
 	public static void main(String[] args) {
 		SignTable sign = new SignTable();
 		sign.dealWith();
-		System.out.println(sign.synbTable.toString());
-		System.out.println(sign.globalList.toString());
+		sign.display();
 	}
 
 }
