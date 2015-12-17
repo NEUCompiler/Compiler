@@ -1,7 +1,5 @@
 package com.signTable;
 
-import org.omg.CORBA.TypeCodeHolder;
-
 /**
  * 符号表总表元素实体类。
  * @author 刘鑫伟

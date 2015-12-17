@@ -2,93 +2,102 @@ package com.signTable;
 
 /**
  * 活动记录表元素实体类。
+ * 
  * @author 刘鑫伟
  *
  */
 public class Vall {
 
-	private String linkDataArea;
-	private String formTerm;
-	private String localDataArea;
-	private String StackPoint;
-	
+	// 从属于哪个活动记录块。
+	private String belongs;
+	// 局部数据区：用来存放局部变量、内情向量、临时单元。
+	private String name;
+	// 形式单元：用来存放实参的值或地址。(值)
+	private String value;
+	// 执行动作。
+	private String action;
+
 	/**
 	 * 无参构造函数。
 	 */
 	public Vall() {
 	}
-	
+
 	/**
-	 * 
-	 * @param linkDataArea
-	 * @param formTerm
-	 * @param localDataArea
-	 * @param stackPoint
+	 * @param belongs
+	 * @param value
+	 * @param name
 	 */
-	public Vall(String linkDataArea, String formTerm, String localDataArea,
-			String stackPoint) {
+	public Vall(String belongs, String linkDataArea, String value) {
 		super();
-		this.linkDataArea = linkDataArea;
-		this.formTerm = formTerm;
-		this.localDataArea = localDataArea;
-		StackPoint = stackPoint;
+		this.belongs = belongs;
+		this.value = value;
 	}
 
 	/**
-	 * @return the linkDataArea
+	 * @return the belongs
 	 */
-	public String getLinkDataArea() {
-		return linkDataArea;
+	public String getBelongs() {
+		return belongs;
 	}
 
 	/**
-	 * @param linkDataArea the linkDataArea to set
+	 * @param belongs
+	 *            the belongs to set
 	 */
-	public void setLinkDataArea(String linkDataArea) {
-		this.linkDataArea = linkDataArea;
+	public void setBelongs(String belongs) {
+		this.belongs = belongs;
 	}
 
 	/**
-	 * @return the formTerm
+	 * @return the name
 	 */
-	public String getFormTerm() {
-		return formTerm;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param formTerm the formTerm to set
+	 * @param name the name to set
 	 */
-	public void setFormTerm(String formTerm) {
-		this.formTerm = formTerm;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
-	 * @return the localDataArea
+	 * @return the value
 	 */
-	public String getLocalDataArea() {
-		return localDataArea;
+	public String getValue() {
+		return value;
 	}
 
 	/**
-	 * @param localDataArea the localDataArea to set
+	 * @param value the value to set
 	 */
-	public void setLocalDataArea(String localDataArea) {
-		this.localDataArea = localDataArea;
-	}
-
-	/**
-	 * @return the stackPoint
-	 */
-	public String getStackPoint() {
-		return StackPoint;
-	}
-
-	/**
-	 * @param stackPoint the stackPoint to set
-	 */
-	public void setStackPoint(String stackPoint) {
-		StackPoint = stackPoint;
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
-	
+	/**
+	 * @return the action
+	 */
+	public String getAction() {
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "[belongs=" + belongs + ", name=" + name + ", value="
+				+ value + ", action=" + action + "]";
+	}
+
 }

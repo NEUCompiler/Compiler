@@ -3,6 +3,7 @@ package com.signTable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 import com.middleCode.Priority;
 import com.wordScanner.WordScanner;
@@ -29,8 +30,11 @@ public class SignTable {
 	// 函数表。
 	private List<Function> functionTable = new ArrayList<>();
 	// 活动记录表。
-	private List<Vall> vallList = new ArrayList<>();
+	private Stack<ArrayList<Vall>> vallStack = new Stack<>();
+	private List<Vall> globalList = new ArrayList<>();
+	
 	// 执行状态。
+	private Vall vall;
 	private String preWord;
 	private String state;
 	private String code;
@@ -40,7 +44,6 @@ public class SignTable {
 
 	public void dealWith() {
 		String word;
-		String next;
 		if ("while".equals(state)) {
 			code = scanner.getCode();
 		} else if ("whileEnd".equals(state)) {
@@ -63,7 +66,7 @@ public class SignTable {
 			} else if ("while".equals(word)){
 				dealWithWhile(word);
 			} else if (synbTable.containsKey(word)
-					&& ":=".equals(next = read())) {
+					&& ":=".equals(read())) {
 				dealWithUse(word);
 			}
 			
@@ -72,7 +75,7 @@ public class SignTable {
 		if ("while".equals(state)) {
 			scanner.setCode(code);
 		}
-		System.out.println(synbTable.toString());
+//		System.out.println(synbTable.toString());
 	}
 
 	public void dealWithArray() {
@@ -92,8 +95,12 @@ public class SignTable {
 				continue;
 			}
 			code = code + word;
+			
+			if (!",".equals(word)) {
+				buildVallList("var " + word + "|" + word);
+			}
 		}
-		 System.out.println(code);
+//		 System.out.println(code);
 
 		String[] splits = code.split(",");
 		if ("integer".equals(type)) {
@@ -128,7 +135,7 @@ public class SignTable {
 			code = code + replaceVariable(word);
 		}
 		preWord = word;
-		System.out.println(variable + ":=" + code);
+//		System.out.println(variable + ":=" + code);
 
 		if (isExpression(code)) {
 			//setScond有问题。
@@ -139,6 +146,8 @@ public class SignTable {
 		} else {
 			synbTable.get(variable).setValue(code);;
 		}
+		
+		buildVallList(variable + ":=" + code + "|" + variable);
 	}
 	
 	/**
@@ -310,9 +319,40 @@ public class SignTable {
 		return result;
 	}
 	
+	/**
+	 * 构建活动记录。
+	 * @param word
+	 */
+	public void buildVallList(String word) {
+		vall = new Vall();
+		String[] splits = word.split("\\|");
+		String action = splits[0];
+		word = splits[1];
+		
+		vall.setName(word);
+		vall.setAction(action);
+		if (synbTable.containsKey(word)) {
+			vall.setValue(synbTable.get(word).getValue());
+			
+			if (synbTable.get(word).getType() == Type.FUNCTION) {
+				
+			} else {
+				vall.setBelongs("global");
+			}
+			
+		} else {
+			vall.setBelongs("global");
+			vall.setValue("null");
+		}
+		
+		globalList.add(vall);
+	}
+	
 	public static void main(String[] args) {
 		SignTable sign = new SignTable();
 		sign.dealWith();
+		System.out.println(sign.synbTable.toString());
+		System.out.println(sign.globalList.toString());
 	}
 
 }
