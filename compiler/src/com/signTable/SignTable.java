@@ -50,7 +50,7 @@ public class SignTable {
 			
 		}
 		
-		while (!"".equals(word = read())) {
+		while (!"".equals(word = readWord())) {
 
 			// System.out.println(word);
 
@@ -66,7 +66,7 @@ public class SignTable {
 			} else if ("while".equals(word)){
 				dealWithWhile(word);
 			} else if (synbTable.containsKey(word)
-					&& ":=".equals(read())) {
+					&& ":=".equals(readWord())) {
 				dealWithUse(word);
 			}
 			
@@ -89,9 +89,9 @@ public class SignTable {
 		String code = "";
 		String word;
 		String type = "";
-		while (!";".equals(word = read())) {
+		while (!";".equals(word = readWord())) {
 			if (":".equals(word)) {
-				type = read();
+				type = readWord();
 				continue;
 			}
 			code = code + word;
@@ -131,7 +131,7 @@ public class SignTable {
 	public void dealWithUse(String variable) {
 		String code = "";
 		String word;
-		while (!(word = read()).matches("\\;||end||if||while")) {
+		while (!(word = readWord()).matches("\\;||end||if||while")) {
 			code = code + replaceVariable(word);
 		}
 		preWord = word;
@@ -160,21 +160,21 @@ public class SignTable {
 		
 		if (isOK) {
 				dealWith();
-				while (!(word = read()).matches("\\;||end||if||while"));
+				while (!(word = readWord()).matches("\\;||end||if||while"));
 		} else {
-			while (!"else".equals((word = read())));
+			while (!"else".equals((word = readWord())));
 			dealWith();
 		}
 	}
 	
 	public void dealWithWhile(String word) {
 		state = "while";
-		word = read();
+		word = readWord();
 		String code = getBooleanExpression(word);
 		while(judgeBooleanExpression(code)) {
 			dealWith();
 		}
-		while (!"end".equals(read()));
+		while (!"end".equals(readWord()));
 	}
 
 	/**
@@ -188,11 +188,11 @@ public class SignTable {
 //		}
 		
 		if ("if".equals(state)) {
-			while (!"then".equals(word = read())) {
+			while (!"then".equals(word = readWord())) {
 				code = code + word;
 			}
 		} else if ("while".equals(state)) {
-			while (!"do".equals(word = read())) {
+			while (!"do".equals(word = readWord())) {
 				code = code + word;
 			}
 		}
@@ -258,8 +258,8 @@ public class SignTable {
 	 * 
 	 * @return 第一个单词。
 	 */
-	public String read() {
-		return scanner.read();
+	public String readWord() {
+		return scanner.readWord();
 	}
 
 	/**
@@ -310,7 +310,7 @@ public class SignTable {
 	public String replaceVariableForExpression(String expression) {
 		String result = "";
 		WordScanner wordScanner = new WordScanner();
-		ArrayList<String> words = wordScanner.read(expression);
+		ArrayList<String> words = wordScanner.readWord(expression);
 		
 		for (String word : words) {
 			result = result + replaceVariable(word);
