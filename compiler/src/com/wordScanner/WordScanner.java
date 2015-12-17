@@ -318,11 +318,11 @@ public class WordScanner {
 	
 	
 	
-	public String fhq() {
-		ArrayList<String> ret= new ArrayList<>();
-		String now=null,past=null;
+	public ArrayList<String> fhq() {
+		ArrayList<String> ret = new ArrayList<>();
+		String now = null,past = null;
 		now = readWord();
-		while(!"end".equals(now)){
+		while(!".".equals(now)) {
 			if(":=".equals(now)) {
 				past = pastword.pop();
 				ret.add(past);
@@ -333,7 +333,7 @@ public class WordScanner {
 			now = readWord();
 			}
 		}
-		return past;
+		return ret;
 	}
 	
 	
@@ -343,12 +343,12 @@ public class WordScanner {
 	
 	public static void main(String[] args) {
 		WordScanner scaner = new WordScanner();
-
 		scaner.scan(scaner.code);
 		while (!"".equals(scaner.code)) {
 //			scaner.read();
-			System.out.println(scaner.fhq());
+			
 		}
+		
 		
 	}
 }
