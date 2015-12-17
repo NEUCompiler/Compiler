@@ -1,14 +1,8 @@
 package com.signTable;
 
-import java.nio.file.WatchEvent.Kind;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Spliterator;
-
-import javax.lang.model.element.Element;
-
-import org.omg.IOP.Codec;
 
 import com.middleCode.Priority;
 import com.wordScanner.WordScanner;
