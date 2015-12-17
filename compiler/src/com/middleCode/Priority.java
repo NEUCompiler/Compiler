@@ -64,7 +64,7 @@ public class Priority {
 //System.out.println(expression);
 		firstStack.push("#");
 		WordScanner scanner = new WordScanner();
-		ArrayList<String> words = scanner.read(expression);
+		ArrayList<String> words = scanner.readWord(expression);
 //		System.out.println(words.toString());
 		
 		for (String item : words) {
