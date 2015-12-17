@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * 词法扫描器
@@ -32,6 +33,8 @@ public class WordScanner {
 	private Map<String, String> idSignMap = new HashMap<>();
 	// 常数表。
 	private Map<String, String> constantMap = new HashMap<>();
+	
+	private Stack<String> pastword = new Stack<>();
 	
 	{
 		readCodeFromFile();
@@ -203,7 +206,7 @@ public class WordScanner {
 	 * @param code 待识别的程序。
 	 * @return 当前单词。
 	 */
-	public String read() {
+	public String readWord() {
 		String word = ""; // 当前单词。
 		char start; // 开始字符。
 		char ch; // 当前字符。
@@ -267,15 +270,31 @@ public class WordScanner {
 		code = code.substring(i);
 		
 //System.out.println(word);
-		
 		return word;
 	}
 	
-	public ArrayList<String> read(String code) {
+	
+	public String read() {
+		String current = readWord();
+		String currents = null;
+		if (borderMap.containsKey(current)) {
+			currents =current +"|"+"p";
+		} else if(idSignMap.containsKey(current)){
+			currents =current +"|"+"i";
+		}else if(keyWordMap.containsKey(current)){
+			currents =current +"|"+"k";
+		}else if(constantMap.containsKey(current)){
+				currents =current +"|"+"c";
+		}
+		return currents;
+	}
+	
+	
+	public ArrayList<String> readWord(String code) {
 		ArrayList<String> result = new ArrayList<>();
 		this.code = code;
 		while (!"".equals(this.code)) {
-			result.add(read());
+			result.add(readWord());
 		}
 		
 		return result;
@@ -295,13 +314,40 @@ public class WordScanner {
 	public void setCode(String code) {
 		this.code = code;
 	}
+   
+	
+	
+	
+	public String fhq() {
+		ArrayList<String> ret= new ArrayList<>();
+		String now=null,past=null;
+		now = readWord();
+		while(!"end".equals(now)){
+			if(":=".equals(now)) {
+				past = pastword.pop();
+				ret.add(past);
+				pastword.push("" + now);
+				now = readWord();	
+		} else {
+			pastword.push("" + now);
+			now = readWord();
+			}
+		}
+		return past;
+	}
+	
+	
 
+	
+	
+	
 	public static void main(String[] args) {
 		WordScanner scaner = new WordScanner();
 
 		scaner.scan(scaner.code);
 		while (!"".equals(scaner.code)) {
-			scaner.read();
+//			scaner.read();
+			System.out.println(scaner.fhq());
 		}
 		
 	}
