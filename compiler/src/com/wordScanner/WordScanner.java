@@ -39,6 +39,7 @@ public class WordScanner {
 	{
 		readCodeFromFile();
 		writeToMap();
+		scan(code);
 	}
 
 	/**
@@ -285,10 +286,9 @@ public class WordScanner {
 			currents =current +"|"+"k";
 		}else if(constantMap.containsKey(current)){
 				currents =current +"|"+"c";
-		}
+		}else currents = current+"|"+"err";
 		return currents;
 	}
-	
 	
 	public ArrayList<String> readWord(String code) {
 		ArrayList<String> result = new ArrayList<>();

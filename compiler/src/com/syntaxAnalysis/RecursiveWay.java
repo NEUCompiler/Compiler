@@ -28,7 +28,7 @@ public class RecursiveWay {
 	public void read(){
 		String currents;
 		currents = scanner.read();
-		String[] splits = currents.split("|");
+		String[] splits = currents.split("\\|");
 		current = splits[0];
 		kind = splits[1];
 	}
@@ -51,6 +51,7 @@ public class RecursiveWay {
 		if(!"i".equals(kind)){
 			System.out.println("标识符错误"+":"+current);
 		}
+		read();
 	}
 	
 	// 3  <3 分程序deputyProgram> -><10 变量说明VD> <4 复合语句compoundStatement>
