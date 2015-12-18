@@ -16,14 +16,14 @@ public class ForFour {
 	
 	 public static void main(String[] args) {
 		 ForFour aForFour=new ForFour();
-		 aForFour.forRead();
+		 aForFour.forreadWord();
 		 System.out.println(aForFour.quats.toString());
 	 
 	 }
-	public void forRead() {
+	public void forreadWord() {
 		String aString;
 		Quat quat;
-		while(!"".equals((aString=read()))) {
+		while(!"".equals((aString=readWord()))) {
 			if("program".equals(aString)) {
 				quat = new Quat();
 				forProgram(quat);
@@ -49,11 +49,11 @@ public class ForFour {
 			else if(":=".equals(aString)) {
 				forSuanshu();
 			}
-			else if(("end".equals(aString))&&(";".equals(read()))) {
+			else if(("end".equals(aString))&&(";".equals(readWord()))) {
 				quat = new Quat();
 				forEndIfWhileLast(quat);
 			}
-			else if(("end".equals(aString))&&(".".equals(read()))) {
+			else if(("end".equals(aString))&&(".".equals(readWord()))) {
 				quat=new Quat();
 			    forEndLast(quat);				
 		    }
@@ -64,7 +64,7 @@ public class ForFour {
 	
 	public void forProgram(Quat quat) {
 	     quat.setFirst("program");
-	     quat.setSecond(read());
+	     quat.setSecond(readWord());
 	     
 	     quats.add(quat);     
 	}
@@ -82,11 +82,11 @@ public class ForFour {
 		quats.add(quat);
 	}
 	public void forif(Quat quat) {
-		String ifFirst=read();
+		String ifFirst=readWord();
 		quat.setSecond(ifFirst);
-		String ifSecond=read();
+		String ifSecond=readWord();
 		quat.setFirst(ifSecond);
-		String ifThird=read();
+		String ifThird=readWord();
 		quat.setThird(ifThird);
 		String  result = "t" + i++;
 		quat.setFourth(result);
@@ -121,9 +121,9 @@ public class ForFour {
 		quats.add(quat);
 		
 		Quat fivethQuat=new Quat();
-		String whileFirst=read();
+		String whileFirst=readWord();
 		fivethQuat.setSecond(whileFirst);
-		String whileSecond=read();
+		String whileSecond=readWord();
 		fivethQuat.setFirst(whileSecond);
 		String  result = "t" + j++;
 		fivethQuat.setFourth(result);
@@ -135,7 +135,7 @@ public class ForFour {
 		Quat quat = new Quat();
 		String cString;
 		String dString = null;
-		while(!(cString=read()).matches(";||if||while||while||end")) {
+		while(!(cString=readWord()).matches(";||if||while||while||end")) {
 			dString=dString+cString;
 		}
         //弹出while时，说明此时已经读完一个表达式或字符或数字
@@ -155,7 +155,7 @@ public class ForFour {
 			forwhile(quat2);
 		}
 		else if(cString.equals("end"))	{
-			if(";".equals(read())){
+			if(";".equals(readWord())){
 				Quat quat3 = new Quat();
 				forEndIfWhileLast(quat);
 			}
@@ -195,8 +195,8 @@ public class ForFour {
 	}
 	
 
-	private String read() {
-		return scanner.read();
+	private String readWord() {
+		return scanner.readWord();
 	}// 词法读取w
 
 	
