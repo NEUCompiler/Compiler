@@ -35,30 +35,29 @@ public class SignTable {
 
 	// 执行状态。
 	private Vall vall;
-	private String preWord;
 	private String state;
 	private String code;
 
 	WordScanner scanner = new WordScanner();
 	Priority priority = new Priority();
+	
+	{
+		dealWith();
+	}
 
 	public void dealWith() {
 		String word;
 		if ("while".equals(state)) {
 			code = scanner.getCode();
-		} else if ("whileEnd".equals(state)) {
-
 		}
 
 		while (!"".equals(word = readWord())) {
 
-			// System.out.println(word);
-
 			if ("var".equals(word)) {
 				dealWithBasicDefine();
-			} else if ("if".equals(preWord)) {
+			} else if ("if".equals(word)) {
 				state = "if";
-				preWord = null;
+				word = readWord();
 				String code = getBooleanExpression(word);
 				dealWithIf(judgeBooleanExpression(code));
 			} else if ("else".equals(word)) {
@@ -69,12 +68,12 @@ public class SignTable {
 				dealWithUse(word);
 			}
 
+			if ("while".equals(state) && "end".equals(word)) {
+				scanner.setCode(code);
+				return;
+			}
+			
 		}
-
-		if ("while".equals(state)) {
-			scanner.setCode(code);
-		}
-		// System.out.println(synbTable.toString());
 	}
 
 	public void dealWithArray() {
@@ -99,7 +98,6 @@ public class SignTable {
 				buildVallList("var " + word + "|" + word);
 			}
 		}
-		// System.out.println(code);
 
 		String[] splits = code.split(",");
 		if ("integer".equals(type)) {
@@ -132,9 +130,9 @@ public class SignTable {
 		String word;
 		while (!(word = readWord()).matches("\\;||end||if||while")) {
 			code = code + replaceVariable(word);
+			
 		}
-		preWord = word;
-		// System.out.println(variable + ":=" + code);
+		scanner.setCode(word  + " " + scanner.getCode());
 
 		if (isExpression(code)) {
 			// setScond有问题。
@@ -144,7 +142,6 @@ public class SignTable {
 			synbTable.get(variable).setValue(synbTable.get(code).getValue());
 		} else {
 			synbTable.get(variable).setValue(code);
-			;
 		}
 
 		buildVallList(variable + ":=" + code + "|" + variable);
@@ -156,20 +153,20 @@ public class SignTable {
 	 * @param isOK
 	 */
 	public void dealWithIf(Boolean isOK) {
-		String word;
-		String code;
-
 		if (isOK) {
 			dealWith();
-			while (!(word = readWord()).matches("\\;||end||if||while"))
+			while (!(readWord()).matches("\\;||end||if||while"))
 				;
 		} else {
-			while (!"else".equals((word = readWord())))
-				;
+			while (!"else".equals((readWord())));
 			dealWith();
 		}
 	}
 
+	/**
+	 * 处理while语句。
+	 * @param word
+	 */
 	public void dealWithWhile(String word) {
 		state = "while";
 		word = readWord();
@@ -177,8 +174,8 @@ public class SignTable {
 		while (judgeBooleanExpression(code)) {
 			dealWith();
 		}
-		while (!"end".equals(readWord()))
-			;
+		while (!"end".equals(readWord()));
+		state = "endWhile";
 	}
 
 	/**
@@ -187,9 +184,6 @@ public class SignTable {
 	public String getBooleanExpression(String variable) {
 		String word = "";
 		String code = variable;
-		// if (synbTable.containsKey(code)) {
-		// code = synbTable.get(code).getValue();
-		// }
 
 		if ("if".equals(state)) {
 			while (!"then".equals(word = readWord())) {
@@ -295,6 +289,8 @@ public class SignTable {
 		priority.dealConverseExpression(expression);
 		result = priority.getQuats().get(priority.getQuats().size() - 1)
 				.getFourth();
+		
+		result = "" + (int)Double.parseDouble(result);
 		return result;
 	}
 

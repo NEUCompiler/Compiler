@@ -93,7 +93,4 @@ public class Quat {
 				+ third + ", fourth=" + fourth + "]";
 	}
 	
-	
-	
-	
 }
