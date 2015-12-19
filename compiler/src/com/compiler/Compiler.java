@@ -12,12 +12,16 @@ public class Compiler {
 	SignTable signTable = new SignTable();
 	
 	public void excute() {
-		recursiveWay.program();
-		forFour.forreadWord();
-		signTable.display();
+		recursiveWay.recursive();
+		
+		if (recursiveWay.isOk() == true) {
+			forFour.forreadWord();
+			signTable.display();
+		}
 	}
 
 	public static void main(String[] args) {
-		new Compiler().excute();
+		Compiler compiler = new Compiler();
+		compiler.excute();
 	}
 }

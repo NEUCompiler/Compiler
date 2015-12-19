@@ -9,6 +9,7 @@ import com.wordScanner.WordScanner;
  *
  */
 public class RecursiveWay {
+	boolean isOk;
 	String current ;
 	String kind;
 	String word;
@@ -397,6 +398,30 @@ public class RecursiveWay {
 		}
 	}
 
+	
+	
+	/**
+	 * @return the isOk
+	 */
+	public boolean isOk() {
+		return isOk;
+	}
+
+
+	/**
+	 * 入口函数。
+	 */
+	public void recursive() {
+		program();
+		if( tures == 0){
+			System.out.println("Perfect!!");
+			isOk = true;
+		}else {
+			System.out.println("There have "+tures+" errors");
+			isOk = false;
+		}
+		System.out.println();
+	}
 	
 	// read()为词法分析要读取得词。current为本程序中当前词，通过read()来更新current变量。
 	public static void main(String[] args) {
