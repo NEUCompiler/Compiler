@@ -57,7 +57,8 @@ public class Vall {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -71,12 +72,13 @@ public class Vall {
 	}
 
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
 	/**
 	 * @return the action
 	 */
@@ -85,19 +87,22 @@ public class Vall {
 	}
 
 	/**
-	 * @param action the action to set
+	 * @param action
+	 *            the action to set
 	 */
 	public void setAction(String action) {
 		this.action = action;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "belongs=" + belongs + ", name=" + name + ", value="
-				+ value + ", action= " + action;
+		return "belongs=" + belongs + ", name=" + name + ", value=" + value
+				+ ", action= " + action;
 	}
 
 }

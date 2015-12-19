@@ -40,11 +40,11 @@ public class SignTable {
 
 	WordScanner scanner = new WordScanner();
 	Priority priority = new Priority();
-	
+
 	{
 		dealWith();
 	}
-	
+
 	public void dealWith() {
 		String word;
 		if ("while".equals(state)) {
@@ -72,7 +72,7 @@ public class SignTable {
 				scanner.setCode(code);
 				return;
 			}
-			
+
 		}
 	}
 
@@ -130,9 +130,9 @@ public class SignTable {
 		String word;
 		while (!(word = readWord()).matches("\\;||end||if||while")) {
 			code = code + replaceVariable(word);
-			
+
 		}
-		scanner.setCode(word  + " " + scanner.getCode());
+		scanner.setCode(word + " " + scanner.getCode());
 
 		if (isExpression(code)) {
 			// setScond有问题。
@@ -158,13 +158,15 @@ public class SignTable {
 			while (!(readWord()).matches("\\;||end||if||while"))
 				;
 		} else {
-			while (!"else".equals((readWord())));
+			while (!"else".equals((readWord())))
+				;
 			dealWith();
 		}
 	}
 
 	/**
 	 * 处理while语句。
+	 * 
 	 * @param word
 	 */
 	public void dealWithWhile(String word) {
@@ -174,7 +176,8 @@ public class SignTable {
 		while (judgeBooleanExpression(code)) {
 			dealWith();
 		}
-		while (!"end".equals(readWord()));
+		while (!"end".equals(readWord()))
+			;
 		state = "endWhile";
 	}
 
@@ -289,8 +292,8 @@ public class SignTable {
 		priority.dealConverseExpression(expression);
 		result = priority.getQuats().get(priority.getQuats().size() - 1)
 				.getFourth();
-		
-		result = "" + (int)Double.parseDouble(result);
+
+		result = "" + (int) Double.parseDouble(result);
 		return result;
 	}
 

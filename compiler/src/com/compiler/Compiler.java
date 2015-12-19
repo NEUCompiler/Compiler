@@ -5,14 +5,19 @@ import com.signTable.SignTable;
 import com.syntaxAnalysis.RecursiveWay;
 import com.wordScanner.WordScanner;
 
+/**
+ * 编译器前端。
+ * @author 刘鑫伟
+ *
+ */
 public class Compiler {
 	WordScanner wordScanner = new WordScanner();
 	RecursiveWay recursiveWay = new RecursiveWay();
 	SignTable signTable = new SignTable();
-	
+
 	public void excute() {
 		recursiveWay.recursive();
-		
+
 		if (recursiveWay.getTures() == 0) {
 			ForFour forFour = new ForFour();
 			forFour.forreadWord();

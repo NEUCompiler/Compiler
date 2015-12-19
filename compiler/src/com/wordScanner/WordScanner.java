@@ -33,9 +33,9 @@ public class WordScanner {
 	private Map<String, String> idSignMap = new HashMap<>();
 	// 常数表。
 	private Map<String, String> constantMap = new HashMap<>();
-	
+
 	private Stack<String> pastword = new Stack<>();
-	
+
 	{
 		readCodeFromFile();
 		writeToMap();
@@ -60,9 +60,6 @@ public class WordScanner {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		// code = code.replace(" ", "");
-//		System.out.println(code);
-
 	}
 
 	/**
@@ -86,9 +83,7 @@ public class WordScanner {
 				} else if ("Border".equals(kind)) {
 					String[] splits = line.split(" ");
 					borderMap.put(splits[0], splits[1]);
-
 				}
-
 			}
 
 			reader.close();
@@ -96,8 +91,6 @@ public class WordScanner {
 			ex.printStackTrace();
 		}
 
-		// System.out.println(keyWordMap.toString());
-		// System.out.println(borderMap.toString());aaa
 	}
 
 	/**
@@ -113,15 +106,15 @@ public class WordScanner {
 
 		while (!"".equals(code)) {
 			int i = 0;
-			
+
 			while (code.indexOf(" ") == 0) {
 				code = code.substring(1);
 			}
-			
+
 			if ("".equals(code)) {
 				break;
 			}
-			
+
 			start = code.charAt(0);
 			if ((start >= 'A' && start <= 'Z')
 					|| (start >= 'a' && start <= 'z')) {
@@ -134,7 +127,7 @@ public class WordScanner {
 					}
 					ch = code.charAt(i);
 				}
-				word = code.substring(0, i);   // 截取字符串
+				word = code.substring(0, i); // 截取字符串
 				// 判断当前单词在哪个表中
 				if (keyWordMap.containsKey(word)) {
 					token = token + "<" + word + "," + "Keyword" + ","
@@ -174,11 +167,12 @@ public class WordScanner {
 
 			} else {
 				start = code.charAt(0);
-				if(start == '<' || start == '>' ||start == '='|| start == ':') {
+				if (start == '<' || start == '>' || start == '='
+						|| start == ':') {
 					ch = code.charAt(1);
-				 
+
 					String signAdd = "" + start + ch;
-					
+
 					if (borderMap.containsKey(signAdd)) {
 						i = i + 2;
 						token = token + "<" + signAdd + "," + "border" + ","
@@ -186,25 +180,24 @@ public class WordScanner {
 					} else {
 						i = i + 1;
 						token = token + "<" + start + "," + "border" + ","
-							+ borderMap.get("" + start) + ">";
+								+ borderMap.get("" + start) + ">";
 					}
 				} else {
 					i = i + 1;
 					token = token + "<" + start + "," + "border" + ","
-						+ borderMap.get("" + start) + ">";
+							+ borderMap.get("" + start) + ">";
 				}
 			}
 			code = code.substring(i);
 			token = token + " ";
 		}
-		
-//		System.out.println(token);
 	}
-	
+
 	/**
 	 * 读单词，给语法分析提供使用。
 	 * 
-	 * @param code 待识别的程序。
+	 * @param code
+	 *            待识别的程序。
 	 * @return 当前单词。
 	 */
 	public String readWord() {
@@ -212,18 +205,17 @@ public class WordScanner {
 		char start; // 开始字符。
 		char ch; // 当前字符。
 		int i = 0;
-		
+
 		while (code.indexOf(" ") == 0) {
 			code = code.substring(1);
 		}
-		
+
 		if ("".equals(code)) {
 			return "";
 		}
-		
+
 		start = code.charAt(0);
-		if ((start >= 'A' && start <= 'Z')
-				|| (start >= 'a' && start <= 'z')) {
+		if ((start >= 'A' && start <= 'Z') || (start >= 'a' && start <= 'z')) {
 			ch = code.charAt(0);
 			while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
 					|| Character.isDigit(ch)) {
@@ -233,13 +225,12 @@ public class WordScanner {
 				}
 				ch = code.charAt(i);
 			}
-			word = code.substring(0, i);   
+			word = code.substring(0, i);
 		} else if (Character.isDigit(start)) {
 			int pointerTimes = 0;
 			ch = code.charAt(0);
 
-			while (Character.isDigit(ch)
-					|| ((ch == '.') && pointerTimes == 0)) {
+			while (Character.isDigit(ch) || ((ch == '.') && pointerTimes == 0)) {
 				if (ch == '.') {
 					pointerTimes++;
 				}
@@ -251,11 +242,11 @@ public class WordScanner {
 			}
 			word = code.substring(0, i);
 		} else {
-			if(start == '<' || start == '>' ||start == '='|| start == ':') {
+			if (start == '<' || start == '>' || start == '=' || start == ':') {
 				ch = code.charAt(1);
-			 
+
 				String signAdd = "" + start + ch;
-				
+
 				if (borderMap.containsKey(signAdd)) {
 					i = i + 2;
 					word = signAdd;
@@ -264,43 +255,59 @@ public class WordScanner {
 					word = "" + start;
 				}
 			} else {
-				i = i + 1; 
-				word = "" + start; 
+				i = i + 1;
+				word = "" + start;
 			}
 		}
 		code = code.substring(i);
-		
-//System.out.println(word);
+
 		return word;
 	}
-	
-	
+
 	public String read() {
 		String current = readWord();
 		String currents = null;
 		if (borderMap.containsKey(current)) {
-			currents =current +"|"+"p";
-		} else if(idSignMap.containsKey(current)){
-			currents =current +"|"+"i";
-		}else if(keyWordMap.containsKey(current)){
-			currents =current +"|"+"k";
-		}else if(constantMap.containsKey(current)){
-				currents =current +"|"+"c";
-		}else currents = current+"|"+"err";
+			currents = current + "|" + "p";
+		} else if (idSignMap.containsKey(current)) {
+			currents = current + "|" + "i";
+		} else if (keyWordMap.containsKey(current)) {
+			currents = current + "|" + "k";
+		} else if (constantMap.containsKey(current)) {
+			currents = current + "|" + "c";
+		} else
+			currents = current + "|" + "err";
 		return currents;
 	}
-	
+
 	public ArrayList<String> readWord(String code) {
 		ArrayList<String> result = new ArrayList<>();
 		this.code = code;
 		while (!"".equals(this.code)) {
 			result.add(readWord());
 		}
-		
+
 		return result;
 	}
 
-	
+	public ArrayList<String> fhq() {
+		ArrayList<String> ret = new ArrayList<>();
+		String now = null, past = null;
+		now = readWord();
+		while (!".".equals(now)) {
+			if (":=".equals(now)) {
+				past = pastword.pop();
+				ret.add(past);
+				pastword.push("" + now);
+				now = readWord();
+			} else {
+				pastword.push("" + now);
+				now = readWord();
+			}
+		}
+		return ret;
+	}
+
 	/**
 	 * @return the code
 	 */
@@ -309,46 +316,27 @@ public class WordScanner {
 	}
 
 	/**
-	 * @param code the code to set
+	 * @param code
+	 *            the code to set
 	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
-   
-	
-	
-	
-	public ArrayList<String> fhq() {
-		ArrayList<String> ret = new ArrayList<>();
-		String now = null,past = null;
-		now = readWord();
-		while(!".".equals(now)) {
-			if(":=".equals(now)) {
-				past = pastword.pop();
-				ret.add(past);
-				pastword.push("" + now);
-				now = readWord();	
-		} else {
-			pastword.push("" + now);
-			now = readWord();
-			}
-		}
-		return ret;
-	}
-	
-	
 
-	
-	
-	
+	/**
+	 * @return the token
+	 */
+	public String getToken() {
+		return token;
+	}
+
 	public static void main(String[] args) {
 		WordScanner scaner = new WordScanner();
 		scaner.scan(scaner.code);
 		while (!"".equals(scaner.code)) {
-//			scaner.read();
-			
+			// scaner.read();
+
 		}
-		
-		
+
 	}
 }

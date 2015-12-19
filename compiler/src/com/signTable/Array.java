@@ -2,28 +2,30 @@ package com.signTable;
 
 /**
  * 数组表元素实体类。
+ * 
  * @author 刘鑫伟
  *
  */
 public class Array {
 
-	//数组的下界。
+	// 数组的下界。
 	private String low;
-	//数组的上界。
+	// 数组的上界。
 	private String up;
-	//成分类型指针，指向该维数组成分类型(在类型表中的信息)。
+	// 成分类型指针，指向该维数组成分类型(在类型表中的信息)。
 	private String ctp;
-	//成分类型的长度，成分类型的数据所值单元的个数。
+	// 成分类型的长度，成分类型的数据所值单元的个数。
 	private String clen;
-	
+
 	/**
 	 * 无参构造函数。
 	 */
 	public Array() {
 	}
-	
+
 	/**
 	 * 有参构造函数。
+	 * 
 	 * @param low
 	 * @param up
 	 * @param ctp
@@ -45,7 +47,8 @@ public class Array {
 	}
 
 	/**
-	 * @param low the low to set
+	 * @param low
+	 *            the low to set
 	 */
 	public void setLow(String low) {
 		this.low = low;
@@ -59,7 +62,8 @@ public class Array {
 	}
 
 	/**
-	 * @param up the up to set
+	 * @param up
+	 *            the up to set
 	 */
 	public void setUp(String up) {
 		this.up = up;
@@ -73,7 +77,8 @@ public class Array {
 	}
 
 	/**
-	 * @param ctp the ctp to set
+	 * @param ctp
+	 *            the ctp to set
 	 */
 	public void setCtp(String ctp) {
 		this.ctp = ctp;
@@ -87,13 +92,11 @@ public class Array {
 	}
 
 	/**
-	 * @param clen the clen to set
+	 * @param clen
+	 *            the clen to set
 	 */
 	public void setClen(String clen) {
 		this.clen = clen;
 	}
-	
-	
-	
-	
+
 }

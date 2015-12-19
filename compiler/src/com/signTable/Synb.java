@@ -2,31 +2,33 @@ package com.signTable;
 
 /**
  * 符号表总表元素实体类。
+ * 
  * @author 刘鑫伟
  *
  */
 public class Synb {
-	
-	//名字，标识符源码。
+
+	// 名字，标识符源码。
 	private String name;
-	//值(新增项)。
+	// 值(新增项)。
 	private String value;
 	/*
 	 * 类型，指针，指向类型表相应项。:i(整型)，r(实型)，c(字符型)，b(布尔型)， a(数组型)，
 	 * d(结构型)f(函数)，c(常量)，t(类型)，d(域名)，v,vn,vf(变量，换名形参，赋值形参)。
 	 */
 	private Type type;
-	//数据长度。
+	// 数据长度。
 	private int length;
-	
+
 	/**
 	 * 无参构造函数。
 	 */
 	public Synb() {
 	}
-	
+
 	/**
 	 * 有参构造函数。
+	 * 
 	 * @param name
 	 * @param type
 	 * @param length
@@ -38,10 +40,9 @@ public class Synb {
 		this.length = length;
 	}
 
-
-
 	/**
 	 * 有参构造函数。
+	 * 
 	 * @param name
 	 * @param value
 	 * @param type
@@ -64,7 +65,8 @@ public class Synb {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -78,12 +80,12 @@ public class Synb {
 	}
 
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
-
 
 	/**
 	 * @return the type
@@ -93,7 +95,8 @@ public class Synb {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(Type type) {
 		this.type = type;
@@ -107,13 +110,16 @@ public class Synb {
 	}
 
 	/**
-	 * @param length the length to set
+	 * @param length
+	 *            the length to set
 	 */
 	public void setLength(int length) {
 		this.length = length;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -121,7 +127,5 @@ public class Synb {
 		return "name=" + name + ", value=" + value + ", type=" + type
 				+ ", length=" + length;
 	}
-	
-}
-	
 
+}
