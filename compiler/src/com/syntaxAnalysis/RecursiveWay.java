@@ -36,14 +36,13 @@ public class RecursiveWay {
 	// 1 程序入口，<1 程序program> ->program <2 标识符ID> <3 分程序deputyProgram>
 	public void program() {
 		read();
-		if ("program".equals(current)) {
-			read();
-			ID();
-			deputyprogram();
-		} else {
+		if (!"program".equals(current)) {
 			System.out.println("关键字错误" + ":" + current + " " + "应该为program");
 			tures++;
 		}
+			read();
+			ID();
+			deputyprogram();
 	}
 
 	// 2判断是否是符合标识符定义，a型,abc型,abc123型
@@ -62,7 +61,10 @@ public class RecursiveWay {
 
 	// 4复合语句的判断，主体部分**，里面是主体架构，从begin 到最后的end.
 	public void compoundStatement() {
-		if ("begin".equals(current)) {
+		if (!"begin".equals(current)) {
+			System.out.println("关键字错误" + ":" + current + " " + "应该为begin");
+			tures++;
+		}
 			read();
 			while (!"end".equals(current)) {
 				if ("while".equals(current)) {
@@ -72,14 +74,11 @@ public class RecursiveWay {
 				} else
 					statementTable();
 			}
-		} else {
-			System.out.println("关键字错误" + ":" + current + " " + "应该为begin");
-			tures++;
-		}
 		read();
 		if (!".".equals(current)) {
 			System.out.println("结尾符号错误" + ":" + current + " " + "应该为.");
 			tures++;
+			read();
 		}
 	}
 
@@ -111,6 +110,7 @@ public class RecursiveWay {
 			System.out.println("关键字类型错误" + ":" + current + " "
 					+ "应该为integer或real或char");
 			tures++;
+			read();
 		}
 	}
 
@@ -127,7 +127,15 @@ public class RecursiveWay {
 	// assignmentStatement赋值语句>;
 	// 这里是主要处理whlie,if的复合语句；
 	private void compoundStatement1() {
-		if ("begin".equals(current)) {
+		if (!"begin".equals(current)) {
+			if("i".equals(kind)){
+				assignmentStatement();
+			}else {
+			System.out.println("关键字类型错误" + ":" + current + " "
+					+ "应该为begin");
+			tures++;
+			}
+		}else {
 			read();
 			statementTable();
 			if ("end".equals(current)) {
@@ -136,19 +144,21 @@ public class RecursiveWay {
 				} else {
 					System.out.println("符号错误" + ":" + current + " " + "应该为;");
 					tures++;
+					read();
 				}
 			} else {
 				System.out.println("关键字错误" + ":" + current + " " + "应该为end");
 				tures++;
+				read();
 			}
-		} else
-			assignmentStatement();
 		if (";".equals(current)) {
 			read();
 		} else {
 			System.out.println("符号错误" + ":" + current + " " + "应该为;");
 			tures++;
+			read();
 		}
+	}
 	}
 
 	// 9号 赋值语句的判断，给语句赋值
@@ -161,12 +171,16 @@ public class RecursiveWay {
 		} else {
 			System.out.println("符号错误" + ":" + current + " " + "应该为:=");
 			tures++;
+			read();
 		}
 	}
 
 	// 10 <10 变量说明VD>-> var <5 标识符表IDTable> ：<6 类型type>
 	private void VD() {
-		if ("var".equals(current)) {
+		if (!"var".equals(current)) {
+			System.out.println("关键字错误" + ":" + current + " " + "应该为var");
+			tures++;
+		}
 			read();
 			IDTable();
 			if (":".equals(current)) {
@@ -177,27 +191,25 @@ public class RecursiveWay {
 				} else {
 					System.out.println("符号错误" + ":" + current + " " + "应该为;");
 					tures++;
+					read();
 				}
 			} else {
 				System.out.println("符号错误" + ":" + current + " " + "应该为;");
 				tures++;
+				read();
 			}
-		} else {
-			System.out.println("关键字错误" + ":" + current + " " + "应该为var");
-			tures++;
-		}
 	}
 
 	// 11 <11 while>-><12 or> do <8 compoundStatement1复合语句>
 	public void whiles() {
 		or();
-		if ("do".equals(current)) {
-			read();
-			compoundStatement1();
-		} else {
+		if (!"do".equals(current)) {
 			System.out.println("关键字错误" + ":" + current + " " + "应该为do");
 			tures++;
 		}
+			read();
+			compoundStatement1();
+	
 	}
 
 	// 12 <12 or>-><14 and>{or<14 and>}
@@ -212,20 +224,18 @@ public class RecursiveWay {
 	// 13 <13 if> -> <12 or>then<8 compoundStatement1>else<8 compoundStatement1>
 	public void ifs() {
 		or();
-		if ("then".equals(current)) {
-			read();
-			compoundStatement1();
-			if ("else".equals(current)) {
-				read();
-				compoundStatement1();
-			} else {
-				System.out.println("关键字错误" + ":" + current + " " + "应该为else");
-				tures++;
-			}
-		} else {
+		if (!"then".equals(current)) {
 			System.out.println("关键字错误" + ":" + current + " " + "应该为then");
 			tures++;
 		}
+			read();
+			compoundStatement1();
+			if (!"else".equals(current)) {
+				System.out.println("关键字错误" + ":" + current + " " + "应该为else");
+				tures++;
+			}
+				read();
+				compoundStatement1();
 	}
 
 	// 14 <14 and>-><15 not>{and<15 not>}
@@ -256,6 +266,7 @@ public class RecursiveWay {
 			} else {
 				System.out.println("算术表达式错误" + ":" + current + " " + "应该为)");
 				tures++;
+				read();
 			}
 		} else {
 			read();
@@ -273,6 +284,7 @@ public class RecursiveWay {
 		} else {
 			System.out.println("语句表达错误" + ":" + current + " " + "应该为");
 			tures++;
+			read();
 		}
 	}
 
@@ -341,8 +353,11 @@ public class RecursiveWay {
 		if ("c".equals(kind)) {
 			if (type2 == 1) {
 				ints();
-			} else
+			} else if(type2 == 2 ){
 				real();
+			}else if(type2 == 3 ){
+				chars();
+			}
 		} else {
 			System.out.println("数据错误" + ":" + current);
 		}
@@ -358,6 +373,7 @@ public class RecursiveWay {
 			if (".".equals(single)) {
 				System.out.println("原定义为整形" + ":" + current + " " + "应该为整形");
 				tures++;
+				single = char2();
 			}
 		}
 	}
@@ -367,13 +383,10 @@ public class RecursiveWay {
 		word = current + "#";
 		single = char2();
 		while (!"#".equals(single)) {
-			ints();
+				number();
 			if (".".equals(single)) {
-				ints();
-			} else {
-				System.out.println("实数拼写错误" + ":" + current + " " + "应该为");
-				tures++;
-			}
+				number();
+			} 
 		}
 	}
 
@@ -388,15 +401,14 @@ public class RecursiveWay {
 	public void number() {
 		if (single.matches("[0-9]")) {
 			single = char2();
-		} else if (".".equals(single)) {
+		} 
+		/*else if (".".equals(single)) {
 			single = char2();
 			if ("#".equals(single)) {
-				read();
 				System.out.println("实数拼写错误" + ":" + current + " " + "应该为");
 				tures++;
-				read();
 			}
-		}
+		}*/
 	}
 
 	public static int getTures() {
