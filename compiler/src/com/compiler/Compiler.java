@@ -13,13 +13,13 @@ import com.wordScanner.WordScanner;
 public class Compiler {
 	WordScanner wordScanner = new WordScanner();
 	RecursiveWay recursiveWay = new RecursiveWay();
-	SignTable signTable = new SignTable();
 
 	public void excute() {
 		recursiveWay.recursive();
 
 		if (recursiveWay.getTures() == 0) {
 			ForFour forFour = new ForFour();
+			SignTable signTable = new SignTable();
 			forFour.forreadWord();
 			signTable.display();
 		}
