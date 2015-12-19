@@ -9,7 +9,6 @@ import com.wordScanner.WordScanner;
  *
  */
 public class RecursiveWay {
-	boolean isOk;
 	String current ;
 	String kind;
 	String word;
@@ -400,11 +399,8 @@ public class RecursiveWay {
 
 	
 	
-	/**
-	 * @return the isOk
-	 */
-	public boolean isOk() {
-		return isOk;
+	public static int getTures() {
+		return tures;
 	}
 
 
@@ -415,10 +411,8 @@ public class RecursiveWay {
 		program();
 		if( tures == 0){
 			System.out.println("Perfect!!");
-			isOk = true;
 		}else {
 			System.out.println("There have "+tures+" errors");
-			isOk = false;
 		}
 		System.out.println();
 	}

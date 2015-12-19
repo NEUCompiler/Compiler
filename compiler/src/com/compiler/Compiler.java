@@ -13,7 +13,7 @@ public class Compiler {
 	public void excute() {
 		recursiveWay.recursive();
 		
-		if (recursiveWay.isOk() == true) {
+		if (recursiveWay.getTures() == 0) {
 			ForFour forFour = new ForFour();
 			forFour.forreadWord();
 			signTable.display();
