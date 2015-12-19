@@ -410,7 +410,7 @@ public class RecursiveWay {
 		program();
 		if (tures == 0) {
 			System.out.println("Perfect!!");
-			System.out.println(scanner.getToken());
+			System.out.println("\nToken:\n" + scanner.getToken());
 		} else {
 			System.out.println("There have " + tures + " errors");
 		}
