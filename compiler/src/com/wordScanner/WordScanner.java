@@ -198,7 +198,7 @@ public class WordScanner {
 			token = token + " ";
 		}
 		
-		System.out.println(token);
+//		System.out.println(token);
 	}
 	
 	/**

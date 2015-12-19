@@ -89,8 +89,8 @@ public class Quat {
 	 */
 	@Override
 	public String toString() {
-		return "Quat [first=" + first + ", second=" + second + ", third="
-				+ third + ", fourth=" + fourth + "]";
+		return "first=" + first + ", second=" + second + ", third="
+				+ third + ", fourth=" + fourth;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.zip.CRC32;
 
 import org.omg.CORBA.CTX_RESTRICT_SCOPE;
 
+import com.signTable.SignTable;
 import com.wordScanner.WordScanner;
 
 public class ForFour {
@@ -13,16 +14,18 @@ public class ForFour {
 
 	private ArrayList<Quat> quats = new ArrayList<>();
 	WordScanner scanner = new WordScanner();
+	SignTable signTable = new SignTable();
 	
 	 public static void main(String[] args) {
 		 ForFour aForFour=new ForFour();
 		 aForFour.forreadWord();
-		 System.out.println(aForFour.quats.toString());
+//		 System.out.println(aForFour.quats.toString());
 	 
 	 }
 	public void forreadWord() {
 		String aString;
 		Quat quat;
+		String preWord = null;
 		while(!"".equals((aString=readWord()))) {
 			if("program".equals(aString)) {
 				quat = new Quat();
@@ -47,7 +50,7 @@ public class ForFour {
 				forElse(quat);
 			}
 			else if(":=".equals(aString)) {
-				forSuanshu();
+				forSuanshu(preWord);
 			}
 			else if(("end".equals(aString))&&(";".equals(readWord()))) {
 				quat = new Quat();
@@ -57,9 +60,10 @@ public class ForFour {
 				quat=new Quat();
 			    forEndLast(quat);				
 		    }
+			preWord = aString;
 		}
 		
-		System.out.println(quats.toString());
+		displayQuats();
 	} 
 	
 	public void forProgram(Quat quat) {
@@ -131,20 +135,37 @@ public class ForFour {
 		quats.add(fivethQuat);	
 	}
 	
-	public void forSuanshu() {
+	/**
+	 * 对算数表达式进行处理。
+	 * @param preWord
+	 */
+	public void forSuanshu(String preWord) {
+		String pre = null;
 		Quat quat = new Quat();
 		String cString;
-		String dString = null;
+		String dString = "";
 		while(!(cString=readWord()).matches(";||if||while||while||end")) {
-			dString=dString+cString;
+			dString=dString+signTable.replaceVariable(cString);
+			if (":=".equals(cString)) {
+				preWord = pre;
+			}
+			pre = cString;
 		}
         //弹出while时，说明此时已经读完一个表达式或字符或数字
 		//if(isExpression(dString)){
 		//此处调用计算表达式或字符或数字的函数（dstring)
-		
+		Priority priority = new Priority();
+		priority.dealConverseExpression(dString);
+		for (Quat q : priority.getQuats()) {
+			if (q.getFirst() == null) {
+				q.setFirst(preWord);
+			}
+			quats.add(q);
+		}
+//		System.out.println(priority.getQuats().toString());
 		
 		if(cString.equals(";")){
-			forSuanshu();
+			forSuanshu(preWord);
 		}
 		else if(cString.equals("if")){
 			Quat quat1 = new Quat();
@@ -164,7 +185,7 @@ public class ForFour {
 				forEndLast(quat);
 			}
 		}
-			
+		
 	}
 	
 	public void forEndLast(Quat quat) {
@@ -194,11 +215,37 @@ public class ForFour {
 		quats.add(quat);
 	}
 	
+	/**
+	 * 判断是不是表达式。
+	 * 
+	 * @param code
+	 *            带判断代码。
+	 * @return
+	 */
+	public boolean isExpression(String code) {
+
+		if (code.contains("+") || code.contains("-") || code.contains("*")
+				|| code.contains("/")) {
+			return true;
+		}
+		return false;
+	}
 
 	private String readWord() {
 		return scanner.readWord();
 	}// 词法读取w
 
+	/**
+	 * 显示四元式。
+	 */
+	public void displayQuats() {
+		System.err.println("四元式：    共" + quats.size() + "个");
+		
+		for (Quat quat : quats) {
+			System.out.println(quat.toString());
+		}
+		System.out.println();
+	}
 	
 }
 
