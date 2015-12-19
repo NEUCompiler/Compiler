@@ -239,7 +239,7 @@ public class ForFour {
 	 * 显示四元式。
 	 */
 	public void displayQuats() {
-		System.err.println("四元式：    共" + quats.size() + "个");
+		System.out.println("四元式：    共" + quats.size() + "个");
 		
 		for (Quat quat : quats) {
 			System.out.println(quat.toString());
