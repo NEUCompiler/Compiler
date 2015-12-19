@@ -8,13 +8,13 @@ import com.wordScanner.WordScanner;
 public class Compiler {
 	WordScanner wordScanner = new WordScanner();
 	RecursiveWay recursiveWay = new RecursiveWay();
-	ForFour forFour = new ForFour();
 	SignTable signTable = new SignTable();
 	
 	public void excute() {
 		recursiveWay.recursive();
 		
 		if (recursiveWay.isOk() == true) {
+			ForFour forFour = new ForFour();
 			forFour.forreadWord();
 			signTable.display();
 		}

@@ -41,6 +41,10 @@ public class SignTable {
 	WordScanner scanner = new WordScanner();
 	Priority priority = new Priority();
 	
+	{
+		dealWith();
+	}
+	
 	public void dealWith() {
 		String word;
 		if ("while".equals(state)) {
@@ -363,7 +367,6 @@ public class SignTable {
 	 * 输出表。
 	 */
 	public void display() {
-		dealWith();
 		ArrayList<Vall> list;
 
 		pushVallListToStack();
