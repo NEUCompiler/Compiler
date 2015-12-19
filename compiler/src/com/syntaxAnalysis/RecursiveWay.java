@@ -126,40 +126,30 @@ public class RecursiveWay {
 	// 8 <8 compoundStatement1复合语句2> -> begin<7 statementTable语句表>end;|<9
 	// assignmentStatement赋值语句>;
 	// 这里是主要处理whlie,if的复合语句；
-	private void compoundStatement1() {
-		if (!"begin".equals(current)) {
-			if("i".equals(kind)){
-				assignmentStatement();
-			}else {
-			System.out.println("关键字类型错误" + ":" + current + " "
-					+ "应该为begin");
-			tures++;
-			}
-		}else {
-			read();
-			statementTable();
-			if ("end".equals(current)) {
+		private void compoundStatement1() {
+			if ("begin".equals(current)) {
 				read();
-				if (";".equals(current)) {
-				} else {
-					System.out.println("符号错误" + ":" + current + " " + "应该为;");
-					tures++;
+				statementTable();
+				if("end".equals(current)){
 					read();
+					if(";".equals(current)){
+					}else {
+						System.out.println("符号错误"+":"+current+" "+"应该为;");	
+						tures++;
+					}
+				}else {
+					System.out.println("关键字错误"+":"+current+" "+"应该为end");
+					tures++;
 				}
-			} else {
-				System.out.println("关键字错误" + ":" + current + " " + "应该为end");
-				tures++;
+			} else
+				assignmentStatement();
+			if(";".equals(current)){
 				read();
+			}else {
+				System.out.println("符号错误"+":"+current+" "+"应该为;");
+				tures++;
 			}
-		if (";".equals(current)) {
-			read();
-		} else {
-			System.out.println("符号错误" + ":" + current + " " + "应该为;");
-			tures++;
-			read();
 		}
-	}
-	}
 
 	// 9号 赋值语句的判断，给语句赋值
 	private void assignmentStatement() {
