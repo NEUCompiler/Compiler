@@ -8,7 +8,7 @@ begin
        a:=5+1;
        b:=1
      end;
-  else b:=)2+5)+11;
+  else b:=(2+5)+11;
   while a<=10 do
      begin
        a:=a+1;
