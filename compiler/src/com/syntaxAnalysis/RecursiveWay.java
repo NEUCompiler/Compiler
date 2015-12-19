@@ -132,14 +132,14 @@ public class RecursiveWay {
 				statementTable();
 				if("end".equals(current)){
 					read();
-					if(";".equals(current)){
-					}else {
+					if(!";".equals(current)){
 						System.out.println("符号错误"+":"+current+" "+"应该为;");	
 						tures++;
 					}
 				}else {
 					System.out.println("关键字错误"+":"+current+" "+"应该为end");
 					tures++;
+					read();
 				}
 			} else
 				assignmentStatement();
@@ -148,6 +148,7 @@ public class RecursiveWay {
 			}else {
 				System.out.println("符号错误"+":"+current+" "+"应该为;");
 				tures++;
+				read();
 			}
 		}
 
