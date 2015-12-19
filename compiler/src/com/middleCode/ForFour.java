@@ -47,12 +47,15 @@ public class ForFour {
 				forElse(quat);
 			} else if (":=".equals(aString)) {
 				forSuanshu(preWord);
-			} else if (("end".equals(aString)) && (";".equals(readWord()))) {
+			} else if (("end".equals(aString))) {
 				quat = new Quat();
-				forEndIfWhileLast(quat);
-			} else if (("end".equals(aString)) && (".".equals(readWord()))) {
-				quat = new Quat();
-				forEndLast(quat);
+				String pString = readWord();
+				if (";".equals(pString)) {
+					forEndIfWhileLast(quat);
+				} else if (".".equals(pString)) {
+					forEndLast(quat);
+				}
+
 			}
 			preWord = aString;
 		}
@@ -108,7 +111,7 @@ public class ForFour {
 
 	public void forElse(Quat quat) {
 		quat.setFirst("else");
-		String D = "t" + k++;
+		String D = "k" + k++;
 		quat.setSecond(D);
 
 		quats.add(quat);
@@ -124,7 +127,9 @@ public class ForFour {
 		fivethQuat.setSecond(whileFirst);
 		String whileSecond = readWord();
 		fivethQuat.setFirst(whileSecond);
-		String result = "t" + j++;
+		String whileThird = readWord();
+		fivethQuat.setThird(whileThird);
+		String result = "j" + j++;
 		fivethQuat.setFourth(result);
 
 		quats.add(fivethQuat);
@@ -154,7 +159,9 @@ public class ForFour {
 		priority.dealConverseExpression(dString);
 		for (Quat q : priority.getQuats()) {
 			if (q.getFirst() == null) {
-				q.setFirst(preWord);
+				q.setFirst(":=");
+				q.setSecond(q.getFourth());
+				q.setFourth(preWord);
 			}
 			quats.add(q);
 		}
@@ -195,7 +202,10 @@ public class ForFour {
 
 			String s = quats.get(i - 1).getFirst();
 
-			if ("if".equals(s) || "while".equals(s)) {
+			if ("if".equals(s)) {
+				dString = quats.get(i - 1).getFourth();
+				break;
+			} else if ("while".equals(s)) {
 				dString = quats.get(i).getFourth();
 				break;
 			}
