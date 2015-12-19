@@ -7,10 +7,10 @@ package com.middleCode;
  */
 public class Quat {
 
-	private String first;
-	private String second;
-	private String third;
-	private String fourth;
+	private String first = " ";
+	private String second = " ";
+	private String third = " ";
+	private String fourth = " ";
 	
 	public Quat() {
 	}
@@ -89,8 +89,8 @@ public class Quat {
 	 */
 	@Override
 	public String toString() {
-		return "first=" + first + ", second=" + second + ", third="
-				+ third + ", fourth=" + fourth;
+		return "(" + first + ", " + second + ", "
+				+ third + ", " + fourth + ")";
 	}
 	
 }
