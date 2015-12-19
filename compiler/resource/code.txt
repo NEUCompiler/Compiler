@@ -2,7 +2,7 @@ program example
     var a,b:integer;
 begin
   a:=3;
-  b:=3
+  b:=7
   if a>=1 then
      begin
        a:=5+1;
@@ -12,6 +12,6 @@ begin
   while a<=10 do
      begin
        a:=a+1;
-       b:=b
+       b:=4
      end;
 end.
