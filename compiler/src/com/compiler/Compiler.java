@@ -23,6 +23,7 @@ public class Compiler {
 			forFour.forreadWord();
 			signTable.display();
 		}
+		
 	}
 
 	public static void main(String[] args) {
