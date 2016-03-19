@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -329,14 +330,29 @@ public class WordScanner {
 	public String getToken() {
 		return token;
 	}
+	
+	
+	public void printToken() {
+		String[] splits = token.split(" ");
+		token = "";
+		
+		System.out.println("token:\n");
+		
+		for (int i=1; i<splits.length; i++) {
+			if (i%8 == 0) {
+				token = token + splits[i] + "\n";
+			} else {
+				token = token + splits[i] + " ";
+			}
+		}
+		
+		System.out.println(token);
+	}
 
 	public static void main(String[] args) {
 		WordScanner scaner = new WordScanner();
 		scaner.scan(scaner.code);
-		while (!"".equals(scaner.code)) {
-			// scaner.read();
-
-		}
+		scaner.printToken();
 
 	}
 }
